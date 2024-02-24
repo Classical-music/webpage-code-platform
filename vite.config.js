@@ -11,8 +11,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@WidgetList': fileURLToPath(new URL('./src/WidgetList', import.meta.url)),
-      '@config': fileURLToPath(new URL('./src/config', import.meta.url)),
+      '@WidgetMenu': fileURLToPath(new URL('./src/WidgetMenu', import.meta.url)),
+      '@WidgetControl': fileURLToPath(new URL('./src/WidgetControl', import.meta.url)),
+      '@store': fileURLToPath(new URL('./src/store', import.meta.url)),
+      '@Utils': fileURLToPath(new URL('./src/Utils', import.meta.url)),
     }
   }
 })

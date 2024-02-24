@@ -1,13 +1,13 @@
 <script setup>
-import { widgetListMeta } from '@config/WidgetListMeta';
 import MenuCommon from './MenuCommon.vue';
+import { useWidgetMenuStore } from '@store/WidgetMenuStore'
 
 </script>
 
 <template>
   <div class="container">
     <div>UI控件列表</div>
-    <div v-for="item in widgetListMeta" class="item">
+    <div v-for="item in useWidgetMenuStore().data" class="item">
       <MenuCommon :param="item"></MenuCommon>
     </div>
   </div>
@@ -25,4 +25,4 @@ import MenuCommon from './MenuCommon.vue';
   box-sizing: border-box;
   border-top: 1px solid;
 }
-</style>@config/WidgetListMeta
+</style>

@@ -1,6 +1,6 @@
 <script setup>
-import MenuGroup from '@WidgetList/MenuGroup.vue';
-import MenuItem from '@WidgetList/MenuItem.vue';
+import MenuGroup from '@WidgetMenu/MenuGroup.vue';
+import MenuItem from '@WidgetMenu/MenuItem.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
