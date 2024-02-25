@@ -1,27 +1,13 @@
 <script setup>
 import WidgetMenu from '@WidgetMenu/WidgetMenu.vue';
-import { ref } from 'vue';
-
-// 临时测试
-import Screen from '@WidgetControl/Container/Screen.vue'
-
-const item = ref({
-  x: 100,
-  y: 100
-})
+import WidgetSimu from '@WidgetSimu/WidgetSimu.vue'
 </script>
 
 <template>
   <div class="main-container">
     <div class="main-container2" @drop="onDrag" @dragover="onDragOver">
       <WidgetMenu style="width: 15%; z-index: 10;"></WidgetMenu>
-      <div style="position: relative;">
-        <Screen :param="item">
-          <template #content>
-            <div>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-          </template>
-        </Screen>
-      </div>
+      <WidgetSimu></WidgetSimu>
     </div>
   </div>
 </template>
