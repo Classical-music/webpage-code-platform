@@ -19,6 +19,14 @@ const hasChild = computed(_ => {
   return subs.length > 0
 })
 
+const isSelect = computed(_ => {
+    if (props.param.isSelect === true) {
+        return '3px solid blue'
+    } else {
+        return '3px solid grey'
+    }
+})
+
 </script>
 
 <template>
@@ -32,11 +40,8 @@ const hasChild = computed(_ => {
 
 <style scoped>
 .screen-body {
-  border: 3px solid grey;
+  border: v-bind(isSelect);
   border-radius: 8px 8px 0px 0px;
-  width: 800px;
-  height: 500px;
-  position: absolute;
 }
 
 .screen-title {
@@ -47,8 +52,8 @@ const hasChild = computed(_ => {
 }
 
 .screen-container {
-  height: calc(100% - 20px);
   width: 100%;
+  height: calc(100% - 20px);
   overflow: auto;
   background: #ffffff;
   position: relative;

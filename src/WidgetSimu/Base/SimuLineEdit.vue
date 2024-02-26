@@ -1,11 +1,8 @@
-
-import { parseCache } from 'vue/compiler-sfc';
-
 <script setup>
 import { computed } from 'vue';
 
 const props = defineProps({
-  param: Object
+    param: Object
 })
 
 const bodyStyle = computed(_ => {
@@ -24,12 +21,13 @@ const isSelect = computed(_ => {
 </script>
 
 <template>
-  <div v-drag-move.arg="param"
-    class="button-body" :style="bodyStyle">{{ param.text }}</div>
+    <input v-drag-move:arg="param"
+        class="line-edit-body" :style="bodyStyle"
+        v-model="param.text" />
 </template>
 
 <style scoped>
-.button-body {
+.line-edit-body {
   border: v-bind(isSelect);
   background: '#ffffff';
   cursor: pointer;
