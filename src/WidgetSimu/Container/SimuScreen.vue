@@ -7,10 +7,7 @@ const props = defineProps({
 })
 
 const bodyStyle = computed(_ => {
-  let pos = props.param?.pos ?? {}
   return {
-    left: pos?.x + 'px',
-    top: pos?.y + 'px'
   }
 })
 
@@ -19,19 +16,11 @@ const hasChild = computed(_ => {
   return subs.length > 0
 })
 
-const isSelect = computed(_ => {
-    if (props.param.isSelect === true) {
-        return '3px solid blue'
-    } else {
-        return '3px solid grey'
-    }
-})
-
 </script>
 
 <template>
   <div :style="bodyStyle" class="screen-body">
-    <div class="screen-title" v-drag-move:arg="param"></div>
+    <div class="screen-title"></div>
     <div class="screen-container" v-if="hasChild">
       <SimuCommon v-for="item in props.param.subs" :param="item"></SimuCommon>
     </div>
@@ -40,7 +29,7 @@ const isSelect = computed(_ => {
 
 <style scoped>
 .screen-body {
-  border: v-bind(isSelect);
+  border: 3px solid grey;
   border-radius: 8px 8px 0px 0px;
 }
 

@@ -1,92 +1,68 @@
 <script setup>
-import { computed } from 'vue';
-
 
 const props = defineProps({
     param: Object
 })
 
-const commonStyle = computed(_ => {
-  let param = props.param
-  return {
-    left: param?.pos?.x + 'px',
-    top: param?.pos?.y + 'px',
-    width: param?.size?.w + 'px',
-    height: param?.size?.h + 'px'
-  }
-})
-
 </script>
 
 <template>
-    <div class="editor-body" :style="commonStyle">
-        <div v-drag-move:arg="param" class="center"></div>
-        <div class="top-left"></div>
-        <div class="top"></div>
-        <div class="top-right"></div>
-        <div class="left"></div>
-        <div class="right"></div>
-        <div class="bottom-left"></div>
-        <div class="bottom"></div>
-        <div class="bottom-right"></div>        
-    </div>
+    <div v-lt-resize:arg="param" class="top-left"></div>
+    <div v-t-resize:arg="param" class="top"></div>
+    <div v-rt-resize:arg="param" class="top-right"></div>
+    <div v-l-resize:arg="param" class="left"></div>
+    <div v-r-resize:arg="param" class="right"></div>
+    <div v-lb-resize:arg="param" class="bottom-left"></div>
+    <div v-b-resize:arg="param" class="bottom"></div>
+    <div v-rb-resize:arg="param" class="bottom-right"></div>
 </template>
 
 <style scoped>
-.editor-body {
-    position: relative;
-    border: 1px dashed blue;
-    padding: 10px;
-}
-.editor-body>div {
+div {
     width: 8px;
     height: 8px;
     border: 1px solid grey;
     margin: 0px;
     position: absolute;
 }
-.center {
-    border: 1px solid grey;
-    cursor: move;
-}
 .top-left {
-    top: 0px;
-    left: 0px;
+    top: -9px;
+    left: -9px;
     cursor: nw-resize;
 }
 .top {
-    top: 0px;
-    left: 50%;
+    top: -9px;
+    left: calc(50% - 4px);
     cursor: n-resize;
 }
 .top-right {
-    top: 0px;
-    right: 0px;
+    top: -9px;
+    right: -9px;
     cursor: ne-resize;
 }
 .left {
-    top: 50%;
-    left: 0px;
+    top: calc(50% - 4px);
+    left: -9px;
     cursor: w-resize;
 }
 .right {
-    top: 50%;
-    right: 0px;
+    top: calc(50% - 4px);
+    right: -9px;
     cursor: e-resize;
 }
 .bottom-left {
-    bottom: 0px;
-    left: 0px;
+    bottom: -9px;
+    left: -9px;
     cursor: sw-resize;
 }
 .bottom {
-    bottom: 0px;
-    left: 50%;
+    bottom: -9px;
+    left: calc(50% - 4px);
     cursor: s-resize;
 }
 .bottom-right {
-    bottom: 0px;
-    right: 0px;
+    bottom: -9px;
+    right: -9px;
     cursor: se-resize;
 }
 </style>

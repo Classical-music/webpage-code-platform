@@ -10,24 +10,15 @@ const bodyStyle = computed(_ => {
   }
 })
 
-const isSelect = computed(_ => {
-    if (props.param.isSelect === true) {
-        return '3px dashed blue'
-    } else {
-        return '1px dashed grey'
-    }
-})
 </script>
 
 <template>
-    <label v-drag-move:arg="param"
-        class="label-body" :style="bodyStyle">{{ param.text}}</label>
+    <div class="label-body" :style="bodyStyle">{{ param.text}}</div>
 </template>
 
 <style scoped>
 .label-body {
-  border: v-bind(isSelect);
-  background: '#ffffff';
+  background: #eeeeee;
   cursor: pointer;
 }
 </style>

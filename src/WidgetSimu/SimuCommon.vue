@@ -41,15 +41,24 @@ const isSelect = computed(_ => {
 </script>
 
 <template>
-  <component v-if="!isSelect" :is="getComp" :param="param"
-    class="common-class" :style="commonStyle"
-    @click.stop="dataSet.setSelItem(param)">
-  </component>
-  <SimuEditer v-else :param="param"></SimuEditer>
+  <div :style="commonStyle" class="common-body">
+    <component :is="getComp" :param="param" class="common-class"
+      v-drag-move:arg="param"
+      @click.stop="dataSet.setSelItem(param)">
+    </component>
+    <SimuEditer v-if="isSelect" :param="param"></SimuEditer>
+  </div>
+
 </template>
 
 <style scoped>
-.common-class {
+.common-body {
   position: absolute;
+  box-sizing: border-box;
+}
+.common-class {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 </style>
