@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import SimuEditer from '@WidgetSimu/SimuEditer.vue';
 import SimuScreen from '@WidgetSimu/Container/SimuScreen.vue';
 import SimuButton from '@WidgetSimu/Base/SimuButton.vue';
 import SimuLabel from '@WidgetSimu/Base/SimuLabel.vue';
@@ -34,19 +35,17 @@ const commonStyle = computed(_ => {
 })
 
 const isSelect = computed(_ => {
-    if (props.param.isSelect === true) {
-        return '3px solid blue'
-    } else {
-        return '1px solid grey'
-    }
+    return props.param.isSelect === true
 })
 
 </script>
 
 <template>
-    <component :is="getComp" :param="param"
-      class="common-class" :style="commonStyle"
-      @click.stop="dataSet.setSelItem(param)"></component>
+  <component v-if="!isSelect" :is="getComp" :param="param"
+    class="common-class" :style="commonStyle"
+    @click.stop="dataSet.setSelItem(param)">
+  </component>
+  <SimuEditer v-else :param="param"></SimuEditer>
 </template>
 
 <style scoped>

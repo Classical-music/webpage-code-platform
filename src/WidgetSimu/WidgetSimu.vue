@@ -10,4 +10,6 @@ import SimuCommon from './SimuCommon.vue';
       :param="item"></SimuCommon>
   </div>
 </template>
-<style scoped></style>
+
+<style scoped>
+</style>
