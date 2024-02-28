@@ -21,7 +21,7 @@ const props = defineProps({
 div {
     width: 8px;
     height: 8px;
-    border: 1px solid grey;
+    border: 1px solid blue;
     margin: 0px;
     position: absolute;
 }

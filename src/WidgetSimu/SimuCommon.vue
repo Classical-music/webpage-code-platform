@@ -1,11 +1,13 @@
 <script setup>
 import { computed } from 'vue';
+import { useDataSetStore } from '@store/DataSetStore';
 import SimuEditer from '@WidgetSimu/SimuEditer.vue';
 import SimuScreen from '@WidgetSimu/Container/SimuScreen.vue';
+import SimuPanel from '@WidgetSimu/Container/SimuPanal.vue';
 import SimuButton from '@WidgetSimu/Base/SimuButton.vue';
 import SimuLabel from '@WidgetSimu/Base/SimuLabel.vue';
 import SimuLineEdit from '@WidgetSimu/Base/SimuLineEdit.vue';
-import { useDataSetStore } from '@store/DataSetStore';
+import SimuImage from './Base/SimuImage.vue';
 
 let dataSet = useDataSetStore()
 
@@ -15,9 +17,11 @@ const props = defineProps({
 
 const compDict = {
   Screen: SimuScreen,
+  Panel: SimuPanel,
   Button: SimuButton,
   Label: SimuLabel,
-  LineEdit: SimuLineEdit
+  LineEdit: SimuLineEdit,
+  Image: SimuImage,
 }
 const getComp = computed(_ => {
   let type = props.param?.type ?? 'Screen'
@@ -27,10 +31,10 @@ const getComp = computed(_ => {
 const commonStyle = computed(_ => {
   let param = props.param
   return {
-    left: param?.pos?.x + 'px',
-    top: param?.pos?.y + 'px',
-    width: param?.size?.w + 'px',
-    height: param?.size?.h + 'px'
+    left: param?.rect?.x + 'px',
+    top: param?.rect?.y + 'px',
+    width: param?.rect?.w + 'px',
+    height: param?.rect?.h + 'px'
   }
 })
 

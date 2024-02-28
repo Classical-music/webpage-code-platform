@@ -1,3 +1,7 @@
+/**
+ * 创建自定义指令
+ * @param {Object} app 由createApp 接口创建的对象
+ */
 export function regDirective(app) {
   createDragMove(app)
 
@@ -11,20 +15,24 @@ export function regDirective(app) {
   createReSize(app, 'rb')
 }
 
+/**
+ * 自定义指令: v-drag-move 鼠标拖动控件移动
+ * @param {Object} app vue app对象
+ */
 function createDragMove(app) {
   app.directive("drag-move", (el, binding) => {
     let param = binding.value
-    let { x, y } = param.pos
+    let { x, y } = param.rect
     el.onmousedown = function(ev1) {
       ev1.stopPropagation()
       document.addEventListener('mousemove', onMouseMove)
       document.addEventListener('mouseup', onMouseUp)
     
       function onMouseMove(ev2) {
-          param.pos.x = x + (ev2.pageX - ev1.pageX)
-          if (param.pos.x < 0) param.pos.x = 0
-          param.pos.y = y + (ev2.pageY - ev1.pageY)
-          if (param.pos.y < 0) param.pos.y = 0
+          param.rect.x = x + (ev2.pageX - ev1.pageX)
+          if (param.rect.x < 0) param.rect.x = 0
+          param.rect.y = y + (ev2.pageY - ev1.pageY)
+          if (param.rect.y < 0) param.rect.y = 0
       }
     
       function onMouseUp() {
@@ -40,11 +48,12 @@ function createReSize(app, flag) {
     let param = binding.value
 
     el.onmousedown = function(ev1) {
-      let { x, y } = param.pos
-      let { w, h } = param.size
+      let { x, y } = param.rect
+      let { w, h } = param.rect
       ev1.stopPropagation()
       document.addEventListener('mousemove', onMouseMove)
       document.addEventListener('mouseup', onMouseUp)
+      document.addEventListener("click", onClick, true);
 
       function onMouseMove(ev2) {
         if (flag[0] === 'l') {
@@ -60,31 +69,39 @@ function createReSize(app, flag) {
         }
       }
 
-      function setLeft(posx) {
-        if (posx < -x) posx = -x
-        if (posx > w - 30) posx = w - 30
-        param.pos.x = x + posx
-        param.size.w = w - posx
+      function setLeft(rectx) {
+        if (rectx < -x) rectx = -x
+        if (rectx > w - 30) rectx = w - 30
+        param.rect.x = x + rectx
+        param.rect.w = w - rectx
       }
-      function setTop(posy) {
-        if (posy < -y) posy = -y
-        if (posy > h - 30) posy = h - 30
-        param.pos.y = y + posy
-        param.size.h = h - posy
+      function setTop(recty) {
+        if (recty < -y) recty = -y
+        if (recty > h - 30) recty = h - 30
+        param.rect.y = y + recty
+        param.rect.h = h - recty
       }
-      function setRight(posx) {
-        if (posx < 30 - w) posx = 30 - w
-        param.size.w = w + posx
+      function setRight(rectx) {
+        if (rectx < 30 - w) rectx = 30 - w
+        param.rect.w = w + rectx
       }
-      function setBottom(posy) {
-        if (posy < 30 - h) posy = 30 - h
-        param.size.h = h + posy
+      function setBottom(recty) {
+        if (recty < 30 - h) recty = 30 - h
+        param.rect.h = h + recty
       }
 
       function onMouseUp() {
         document.removeEventListener('mousemove', onMouseMove)
         document.removeEventListener('mouseup', onMouseUp)
+        setTimeout(_ => {
+          document.removeEventListener('click', onClick, true)
+        }, 1)
       }
+    }
+
+    function onClick(e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
   })
 }

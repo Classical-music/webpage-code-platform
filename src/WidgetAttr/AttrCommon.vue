@@ -10,9 +10,11 @@ const selItem = computed(_ => {
 
 const typeList = [
     'Screen',
+    'Panel',
     'Button',
     'Label',
     'LineEdit',
+    'Image',
 ]
 </script>
 
@@ -27,14 +29,19 @@ const typeList = [
 
         <div>
             <label>控件坐标：</label>
-            <input v-model="selItem.pos.x" />ps,
-            <input v-model="selItem.pos.y" />ps
+            <input v-model="selItem.rect.x" style="width: 50px;" />px,
+            <input v-model="selItem.rect.y" style="width: 50px;" />px
         </div>
 
         <div>
             <label>控件宽高: </label>
-            <input v-model="selItem.size.w" />ps,
-            <input v-model="selItem.size.h" />ps
+            <input v-model="selItem.rect.w" style="width: 50px;" />px,
+            <input v-model="selItem.rect.h" style="width: 50px;" />px
+        </div>
+
+        <div v-if="selItem.text">
+            <label>控件文本: </label>
+            <input v-model="selItem.text" style="width: 150px;" />
         </div>
     </div>
 

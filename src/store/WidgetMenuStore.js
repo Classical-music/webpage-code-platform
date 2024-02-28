@@ -38,17 +38,6 @@ const widgetMenuMeta = [
             {
                 name: 'Image',
                 type: 'item'
-            },
-            {
-                name: '控件组2',
-                type: 'group',
-                expand: true,
-                subs: [
-                    {
-                        name: '控件2.1',
-                        type: 'item',
-                    },
-                ]
             }
         ]
     },

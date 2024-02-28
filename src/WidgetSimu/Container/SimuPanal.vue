@@ -19,30 +19,22 @@ const hasChild = computed(_ => {
 </script>
 
 <template>
-  <div :style="bodyStyle" class="screen-body">
-    <div class="screen-title"></div>
-    <div class="screen-container" v-if="hasChild">
+  <div :style="bodyStyle" class="panel-body">
+    <div class="panel-container" v-if="hasChild">
       <SimuCommon v-for="item in props.param.subs" :param="item"></SimuCommon>
     </div>
   </div>
 </template>
 
 <style scoped>
-.screen-body {
-  border: 3px solid #555555;
+.panel-body {
+  border: 1px solid #555555;
   border-radius: 8px 8px 0px 0px;
 }
 
-.screen-title {
+.panel-container {
   width: 100%;
-  height: 20px;
-  background: grey;
-  cursor: pointer;
-}
-
-.screen-container {
-  width: 100%;
-  height: calc(100% - 20px);
+  height: 100%;
   overflow: auto;
   background: #ffffff;
   position: relative;

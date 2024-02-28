@@ -27,26 +27,18 @@ const DataSet = [
         type: 'Screen',
         name: 'Screen1',
         isSelect: false,
-        pos: {
-            x: 100,
-            y: 100,
-        },
-        size: {
-            w: 800,
-            h: 500
+        rect: {
+            x: 100, y: 100,
+            w: 800, h: 500
         },
         subs: [
             {
                 type: 'Button',
                 name: 'button1',
                 isSelect: false,
-                pos: {
-                    x: 100,
-                    y: 100,
-                },
-                size: {
-                    w: 100,
-                    h: 30
+                rect: {
+                    x: 100, y: 100,
+                    w: 100, h: 30,
                 },
                 text: 'button1'
             },
@@ -54,11 +46,9 @@ const DataSet = [
                 type: 'Label',
                 name: 'label1',
                 isSelect: false,
-                pos: {
+                rect: {
                     x: 100,
                     y: 200,
-                },
-                size: {
                     w: 100,
                     h: 30
                 },
@@ -68,15 +58,41 @@ const DataSet = [
                 type: 'LineEdit',
                 name: 'lineEdit1',
                 isSelect: false,
-                pos: {
-                    x: 100,
-                    y: 300,
-                },
-                size: {
-                    w: 100,
-                    h: 30
+                rect: {
+                    x: 100, y: 300,
+                    w: 100, h: 30
                 },
                 text: 'value'
+            },
+            {
+                type: 'Image',
+                name: 'image1',
+                isSelect: false,
+                rect: {
+                    x: 200, y: 100,
+                    w: 80, h: 80
+                },
+                src: ''
+            },
+            {
+                type: 'Panel',
+                name: 'panel1',
+                isSelect: false,
+                rect: {
+                    x: 300, y: 100,
+                    w: 200, h: 200
+                },
+                subs: [
+                    {
+                        type: 'Button',
+                        name: 'panel-btn1',
+                        rect: {
+                            x: 10, y: 10,
+                            w: 100, h: 30
+                        },
+                        text: 'panel-btn1'
+                    }
+                ]
             }
         ]
     },

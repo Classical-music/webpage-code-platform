@@ -19,7 +19,7 @@ const bodyStyle = computed(_ => {
 
 <style scoped>
 .button-body {
-  border: 1px solid grey;
+  border: 1px solid #555555;
   background: #eeeeee;
   cursor: pointer;
 }
