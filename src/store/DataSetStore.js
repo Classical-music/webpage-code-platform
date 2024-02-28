@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 
 export const useDataSetStore = defineStore('data-set', _ => {
     const value = DataSet
-    let selItem = ref(undefined)
+    let selItem = ref(DataSet[0])
 
     const getSelItem = computed(_ => {
         return selItem.value
@@ -19,8 +19,71 @@ export const useDataSetStore = defineStore('data-set', _ => {
         }
     }
 
-    return { value, getSelItem, setSelItem }
+    function addItem(type) {
+        let itemCtor = ItemCreator[type]
+        if (itemCtor === undefined) return
+        let item = itemCtor()
+        console.log(item)
+        if (selItem.value.subs !== undefined) {
+            selItem.value.subs.push(item)
+        }
+    }
+
+    return { value, getSelItem, setSelItem, addItem }
 })
+
+const ItemCreator = {
+    Screen: createScreen,
+    Panel: createPanel,
+    Label: createLabel,
+    Button: createButton,
+    LineEdit: createLineEdit,
+    Image: createImage,
+}
+
+function createItem(type) {
+    return {
+        type: type,
+        name: 'new',
+        isSelect: false,
+        rect: {
+            x: 0, y: 0,
+            w: 30, h: 30,
+        }
+    }
+}
+
+function createScreen() {
+    let item = createItem('Screen')
+    item.subs = []
+    return item
+}
+function createPanel() {
+    let item = createItem('Panel')
+    item.subs = []
+    return item
+}
+function createLabel() {
+    let item = createItem('Label')
+    item.text = 'label'
+    return item
+}
+function createButton() {
+    let item = createItem('Button')
+    item.text = 'button'
+    return item
+}
+
+function createLineEdit() {
+    let item = createItem('LineEdit')
+    item.text = ''
+    return item
+}
+function createImage() {
+    let item = createItem('Image')
+    item.src = ''
+    return item
+}
 
 const DataSet = [
     {
