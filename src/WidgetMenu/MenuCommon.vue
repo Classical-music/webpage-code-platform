@@ -1,6 +1,7 @@
 <script setup>
 import MenuGroup from '@WidgetMenu/MenuGroup.vue';
 import MenuItem from '@WidgetMenu/MenuItem.vue';
+import { useDataSetStore } from '@store/DataSetStore';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -16,10 +17,15 @@ const getComp = computed(_ => {
   return compDict[type]
 })
 
+function addItem() {
+  let type = props.param?.name
+  useDataSetStore().addItem(type)
+}
+
 </script>
 
 <template>
-  <component :is="getComp" :param="param" />
+  <component :is="getComp" :param="param" @click="addItem"/>
 </template>
 
 <style scoped>
