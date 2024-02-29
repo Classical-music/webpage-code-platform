@@ -25,7 +25,7 @@ function addItem() {
 </script>
 
 <template>
-  <component :is="getComp" :param="param" @click="addItem"/>
+  <component :is="getComp" :param="param" @click.stop="addItem"/>
 </template>
 
 <style scoped>

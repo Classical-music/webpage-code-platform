@@ -31,16 +31,16 @@ const typeList = [
         <div class="attr-row">
             <label class="attr-left-label">控件坐标:</label>
             <div class="attr-right-val">
-                <input v-model="selItem.rect.x" style="width: 50px;" />px,
-                <input v-model="selItem.rect.y" style="width: 50px;" />px
+                <input v-model="selItem.rect.x" style="width: 40px;" />px,
+                <input v-model="selItem.rect.y" style="width: 40px;" />px
             </div>
         </div>
 
         <div class="attr-row">
             <label class="attr-left-label">控件宽高:</label>
             <div class="attr-right-val">
-                <input v-model="selItem.rect.w" style="width: 50px;" />px,
-                <input v-model="selItem.rect.h" style="width: 50px;" />px
+                <input v-model="selItem.rect.w" style="width: 40px;" />px,
+                <input v-model="selItem.rect.h" style="width: 40px;" />px
             </div>
         </div>
 
@@ -64,13 +64,13 @@ const typeList = [
     flex-direction: row;
 }
 .attr-left-label {
-    width: 150px;
+    width: 100px;
     line-height: 30px;
     text-align: right;
     margin-right: 40px;
 }
 .attr-right-val {
-    width: 200px;
+    width: 150px;
     height: 30px;
     box-sizing: border-box;
 }
