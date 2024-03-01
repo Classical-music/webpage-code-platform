@@ -2,12 +2,12 @@
 import { useDataSetStore } from '@store/DataSetStore';
 import SimuCommon from './SimuCommon.vue';
 
+let dataSet = useDataSetStore()
 </script>
 
 <template>
-  <div class="simu-body" @click="useDataSetStore().setSelItem(undefined)">
-    <SimuCommon v-for="item in useDataSetStore().value"
-      :param="item"></SimuCommon>
+  <div class="simu-body" @click="dataSet.setSelItem()">
+    <SimuCommon :param="dataSet.page"></SimuCommon>
   </div>
 </template>
 

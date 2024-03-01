@@ -5,7 +5,7 @@ import { useDataSetStore } from '@store/DataSetStore.js'
 const dataSet = useDataSetStore()
 
 const selItem = computed(_ => {
-    return dataSet.getSelItem
+    return dataSet.selItem
 })
 
 const typeList = [

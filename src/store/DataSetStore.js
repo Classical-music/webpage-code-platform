@@ -1,46 +1,63 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { CONN } from "@Utils/connect";
 
 export const useDataSetStore = defineStore('data-set', _ => {
-    const value = initDataSet()
-    let selItem = ref(value[0])
-
-    const getSelItem = computed(_ => {
-        return selItem.value
+    let value = reactive({
+        page: null,
+        selItem: null
     })
 
-    function setSelItem(item) {
-        if (selItem.value !== undefined) {
-            selItem.value.isSelect = false
+    const page = computed(_ => {
+        return value.page
+    })
+
+    const selItem = computed(_ => {
+        return value.selItem
+    })
+
+    function setSelItem(item = null) {
+        if (value.selItem) {
+            value.selItem.isSelect = false
         }
 
-        selItem.value = item
-        if (selItem.value !== undefined) {
-            selItem.value.isSelect = true
+        value.selItem = item
+        if (value.selItem) {
+            value.selItem.isSelect = true
         }
+    }
+
+    function resetPage() {
+        value.page = createPage()
+        setSelItem(value.page)
+    }
+
+    function closePage() {
+        value.page = null
+        setSelItem(value.page)
     }
 
     function addItem(type) {
-        if (selItem.value === undefined) {
-            console.warn('当前未选中控件')
-            return
-        }
+        value.page = createButton(type)
+        // if (value.selItem === undefined) {
+        //     console.warn('当前未选中控件')
+        //     return
+        // }
 
-        if (selItem.value.subs === undefined) {
-            console.warn('当前选中的控件不是容器控件, 无法添加子控件')
-            return
-        }
+        // if (value.selItem.subs === undefined) {
+        //     console.warn('当前选中的控件不是容器控件, 无法添加子控件')
+        //     return
+        // }
 
-        let itemCtor = ItemCreator[type]
-        if (typeof itemCtor !== 'function') {
-            console.warn(`控件类型 ${type} 不支持, 无法创建对象元素`)
-            return
-        }
-        selItem.value.subs.push(itemCtor(type))
+        // let itemCtor = ItemCreator[type]
+        // if (typeof itemCtor !== 'function') {
+        //     console.warn(`控件类型 ${type} 不支持, 无法创建对象元素`)
+        //     return
+        // }
+        // value.selItem.subs.push(itemCtor(type))
     }
 
-    return { value, getSelItem, setSelItem, addItem }
+    return { page, selItem, setSelItem, resetPage, closePage, addItem }
 })
 
 function initDataSet() {
@@ -51,7 +68,7 @@ function initDataSet() {
         })
     return [
         {
-            type: 'Screen',
+            type: 'Page',
             name: 'aaa',
             rect: { x: 0, y: 0, w: 800, h: 500 },
             isSelect: false,
@@ -63,7 +80,7 @@ function initDataSet() {
 }
 
 const ItemCreator = {
-    Screen: createScreen,
+    Page: createPage,
     Panel: createPanel,
     Label: createLabel,
     Button: createButton,
@@ -71,8 +88,8 @@ const ItemCreator = {
     Image: createImage
 }
 
-function createScreen(type) {
-    let item = getCommon(type)
+function createPage() {
+    let item = getCommon("Page")
     item.rect = { x: 0, y: 0, w: 800, h: 500 }
     item.subs = []
     return item

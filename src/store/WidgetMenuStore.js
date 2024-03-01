@@ -1,3 +1,7 @@
+import MenuGroup from "@WidgetMenu/MenuGroup.vue";
+import MenuGroupPage from "@WidgetMenu/MenuGroupPage.vue";
+import MenuItemPage from "@WidgetMenu/MenuItemPage.vue";
+
 import { defineStore } from "pinia";
 
 export const useWidgetMenuStore = defineStore('widget-menu', _ => {
@@ -19,75 +23,94 @@ export const useWidgetMenuStore = defineStore('widget-menu', _ => {
  */
 const widgetMenuMeta = [
     {
-        name: '基础控件',
-        type: 'group',
+        name: '新建',
+        comp: MenuGroup,
         expand: true,
         subs: [
             {
-                name: 'Label',
-                type: 'item',
-            },
-            {
-                name: 'Button',
-                type: 'item'
-            },
-            {
-                name: 'LineEdit',
-                type: 'item'
-            },
-            {
-                name: 'Image',
-                type: 'item'
+                name: '页面',
+                comp: MenuItemPage,
+                type: 'Page',
             }
+            
         ]
     },
     {
-        name: '容器控件',
-        type: 'group',
-        expand: true,
-        subs: [
-            {
-                name: 'Screen',
-                type: 'item',
-            },
-            {
-                name: 'Panel',
-                type: 'item'
-            }
-        ]
-    },
-    {
-        name: '路由控件',
-        type: 'group',
-        expand: true,
-        subs: [
-            {
-                name: 'RouterLink',
-                type: 'item'
-            },
-            {
-                name: 'RouterView',
-                type: 'item'
-            }
-        ]
-    },
-    {
-        name: '组合控件',
-        type: 'group',
-        expand: true,
-        subs: [
-            {
-                name: 'List',
-                type: 'item'
-            },
-            {
-                name: 'Table',
-                type: 'item'
-            },
-            {
-                name: 'Tree',
-                type: 'item'
-            }
-        ]
+        name: 'Page列表',
+        comp: MenuGroupPage,
+        export: true,
+        subs: []
     }
+    // {
+    //     name: '基础控件',
+    //     type: 'group',
+    //     expand: true,
+    //     subs: [
+    //         {
+    //             name: 'Label',
+    //             type: 'item',
+    //         },
+    //         {
+    //             name: 'Button',
+    //             type: 'item'
+    //         },
+    //         {
+    //             name: 'LineEdit',
+    //             type: 'item'
+    //         },
+    //         {
+    //             name: 'Image',
+    //             type: 'item'
+    //         }
+    //     ]
+    // },
+    // {
+    //     name: '容器控件',
+    //     type: 'group',
+    //     expand: true,
+    //     subs: [
+    //         {
+    //             name: 'Screen',
+    //             type: 'item',
+    //         },
+    //         {
+    //             name: 'Panel',
+    //             type: 'item'
+    //         }
+    //     ]
+    // },
+    // {
+    //     name: '路由控件',
+    //     type: 'group',
+    //     expand: true,
+    //     subs: [
+    //         {
+    //             name: 'RouterLink',
+    //             type: 'item'
+    //         },
+    //         {
+    //             name: 'RouterView',
+    //             type: 'item'
+    //         }
+    //     ]
+    // },
+    // {
+    //     name: '组合控件',
+    //     type: 'group',
+    //     expand: true,
+    //     subs: [
+    //         {
+    //             name: 'List',
+    //             type: 'item'
+    //         },
+    //         {
+    //             name: 'Table',
+    //             type: 'item'
+    //         },
+    //         {
+    //             name: 'Tree',
+    //             type: 'item'
+    //         }
+    //     ]
+    // }
 ]

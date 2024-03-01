@@ -1,9 +1,9 @@
 <script setup>
 import { computed } from 'vue';
 import { useDataSetStore } from '@store/DataSetStore';
+import SimuPage from '@WidgetSimu/SimuPage.vue';
 import SimuEditer from '@WidgetSimu/SimuEditer.vue';
-import SimuScreen from '@WidgetSimu/Container/SimuScreen.vue';
-import SimuPanel from '@WidgetSimu/Container/SimuPanal.vue';
+import SimuPanel from '@WidgetSimu/Base/SimuPanal.vue';
 import SimuButton from '@WidgetSimu/Base/SimuButton.vue';
 import SimuLabel from '@WidgetSimu/Base/SimuLabel.vue';
 import SimuLineEdit from '@WidgetSimu/Base/SimuLineEdit.vue';
@@ -12,11 +12,11 @@ import SimuImage from './Base/SimuImage.vue';
 let dataSet = useDataSetStore()
 
 const props = defineProps({
-    param: Object
+    param: [Object, null]
 })
 
 const compDict = {
-  Screen: SimuScreen,
+  Page: SimuPage,
   Panel: SimuPanel,
   Button: SimuButton,
   Label: SimuLabel,
@@ -24,12 +24,13 @@ const compDict = {
   Image: SimuImage,
 }
 const getComp = computed(_ => {
-  let type = props.param?.type ?? 'Screen'
+  let type = props.param?.type ?? 'Page'
   return compDict[type]
 })
 
 const commonStyle = computed(_ => {
   let param = props.param
+  console.log(param)
   return {
     left: param?.rect?.x + 'px',
     top: param?.rect?.y + 'px',
@@ -45,7 +46,7 @@ const isSelect = computed(_ => {
 </script>
 
 <template>
-  <div :style="commonStyle" class="common-body">
+  <div v-if="param" :style="commonStyle" class="common-body">
     <component :is="getComp" :param="param" class="common-class"
       v-drag-move:arg="param"
       @click.stop="dataSet.setSelItem(param)">
