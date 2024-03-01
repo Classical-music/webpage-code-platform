@@ -1,11 +1,13 @@
 import MenuGroup from "@WidgetMenu/MenuGroup.vue";
-import MenuGroupPage from "@WidgetMenu/MenuGroupPage.vue";
-import MenuItemPage from "@WidgetMenu/MenuItemPage.vue";
+import MenuItem from "@WidgetMenu/MenuItem.vue";
 
 import { defineStore } from "pinia";
+import { useDataSetStore } from "./DataSetStore";
+import { FileMgr } from "@Utils/FileMgr";
 
 export const useWidgetMenuStore = defineStore('widget-menu', _ => {
     const data = widgetMenuMeta
+
     return {
         data
     }
@@ -15,32 +17,34 @@ export const useWidgetMenuStore = defineStore('widget-menu', _ => {
  * UI控件源数据
  * 属性:
  *  name: 菜单/控件名字
- *  type: 菜单项类型
- *      'group': 分类项
- *      'item': 具体项
- *  isExpand: 是否展开, group时支持
- *  subs: [] group项的子项
+ *  comp: 加载该项的组件
+ *  expand: 是否展开
+ *  subs: [] 子项数组,
+ *  clickCb: 点击该项时的回调
+ *  initCb: 初始化该项时的回调
  */
-const widgetMenuMeta = [
-    {
+const widgetMenuMeta = {
+    createPage: {
         name: '新建',
         comp: MenuGroup,
         expand: true,
         subs: [
             {
                 name: '页面',
-                comp: MenuItemPage,
+                comp: MenuItem,
                 type: 'Page',
+                clickCb: _ => useDataSetStore().resetPage(),
             }
-            
         ]
     },
-    {
+    pageList: {
         name: 'Page列表',
-        comp: MenuGroupPage,
-        export: true,
+        comp: MenuGroup,
+        expand: true,
+        initCb: _ => FileMgr.loadPageList(),
         subs: []
     }
+}
     // {
     //     name: '基础控件',
     //     type: 'group',
@@ -113,4 +117,4 @@ const widgetMenuMeta = [
     //         }
     //     ]
     // }
-]
+

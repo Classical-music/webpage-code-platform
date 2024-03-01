@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import MenuCommon from './MenuCommon.vue';
 
 const props = defineProps({
@@ -18,6 +18,13 @@ function doExpand() {
     let param = props.param
     param.expand = !param.expand
 }
+
+onMounted(_ => {
+    let initCb = props.param?.initCb
+    if (initCb) {
+        initCb()
+    }
+})
 
 </script>
 

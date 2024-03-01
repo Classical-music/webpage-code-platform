@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="name">{{ param?.name }}</div>
+    <div class="name" @click="param?.clickCb">{{ param?.name }}</div>
 </template>
 
 <style scoped>

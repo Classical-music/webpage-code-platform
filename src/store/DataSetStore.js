@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
-import { CONN } from "@Utils/connect";
 
 export const useDataSetStore = defineStore('data-set', _ => {
     let value = reactive({
@@ -27,8 +26,11 @@ export const useDataSetStore = defineStore('data-set', _ => {
         }
     }
 
-    function resetPage() {
-        value.page = createPage()
+    function resetPage(page = null) {
+        if (page)
+            value.page = page
+        else
+            value.page = createPage()
         setSelItem(value.page)
     }
 
@@ -59,25 +61,6 @@ export const useDataSetStore = defineStore('data-set', _ => {
 
     return { page, selItem, setSelItem, resetPage, closePage, addItem }
 })
-
-function initDataSet() {
-    CONN.loadLocalFile('/public/test.json')
-        .then(data => {
-            if (typeof data !== 'object') return
-            useDataSetStore().value = data
-        })
-    return [
-        {
-            type: 'Page',
-            name: 'aaa',
-            rect: { x: 0, y: 0, w: 800, h: 500 },
-            isSelect: false,
-            subs: [
-
-            ]
-        }
-    ]
-}
 
 const ItemCreator = {
     Page: createPage,

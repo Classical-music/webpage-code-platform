@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from 'vue';
 import SimuCommon from '@WidgetSimu/SimuCommon.vue'
-import { CONN } from '@Utils/connect';
 import { useDataSetStore } from '@store/DataSetStore';
+import { FileMgr } from '@Utils/FileMgr';
 
 const props = defineProps({
   param: Object
@@ -18,9 +18,9 @@ const hasChild = computed(_ => {
   return subs.length > 0
 })
 
-function saveToPage() {
-  let str = JSON.stringify(useDataSetStore().page, null, '    ')
-  CONN.saveFile(`/public/page/${props.param.name}.json`, str)
+async function saveToPage() {
+  console.log(props.param)
+  FileMgr.savePage(props.param?.name)
 }
 
 function closePage() {
