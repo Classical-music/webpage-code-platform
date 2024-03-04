@@ -1,15 +1,15 @@
 <script setup>
-import MenuCommon from './MenuCommon.vue';
-import { useWidgetMenuStore } from '@store/WidgetMenuStore'
+import MenuGroupPage from './MenuGroupPage.vue';
 
+
+const compList = [
+  MenuGroupPage
+]
 </script>
 
 <template>
   <div class="container">
-    <div>UI控件列表</div>
-    <div v-for="item in useWidgetMenuStore().data" class="item">
-      <MenuCommon :param="item"></MenuCommon>
-    </div>
+    <component v-for="comp in compList" :is="comp"></component>
   </div>
 </template>
 

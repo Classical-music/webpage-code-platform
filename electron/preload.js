@@ -7,6 +7,9 @@ contextBridge.exposeInMainWorld('request', {
     saveFile: (pname, str) => {
         return ipcRenderer.invoke('save-file', pname, str)
     },
+    delFile: (pname) => {
+        return ipcRenderer.invoke('del-file', pname)
+    },
     readDir: (dirName) => {
         return ipcRenderer.invoke('read-dir', dirName)
     }

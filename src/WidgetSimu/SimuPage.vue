@@ -1,8 +1,10 @@
 <script setup>
 import { computed } from 'vue';
 import SimuCommon from '@WidgetSimu/SimuCommon.vue'
-import { useDataSetStore } from '@store/DataSetStore';
+import { usePageDataStore } from '@store/PageDataStore';
 import { FileMgr } from '@Utils/FileMgr';
+
+const pageData = usePageDataStore()
 
 const props = defineProps({
   param: Object
@@ -19,12 +21,17 @@ const hasChild = computed(_ => {
 })
 
 async function saveToPage() {
-  console.log(props.param)
-  FileMgr.savePage(props.param?.name)
+  // 生成当前页的数据
+  let str = JSON.stringify(pageData.page, null, '    ')
+
+  // 生产当前页的路径名
+  let pname = `/public/page/${props.param?.name}`
+  FileMgr.saveFile(pname, str)
+  alert('保存成功')
 }
 
 function closePage() {
-  useDataSetStore().closePage()
+  pageData.closePage()
 }
 
 </script>
@@ -33,7 +40,7 @@ function closePage() {
   <div :style="bodyStyle" class="screen-body">
     <div class="screen-title">
       <div>{{ param.name }}</div>
-      <button style="cursor: pointer;" @click="saveToPage">保存为页面</button>
+      <button style="cursor: pointer;" @click="saveToPage">保存页面</button>
       <button style="cursor: pointer;" @click="closePage">关闭</button>
     </div>
     <div class="screen-container" v-if="hasChild">
@@ -68,4 +75,4 @@ function closePage() {
   background: #ffffff;
   position: relative;
 }
-</style>
+</style>@store/PageDataStore

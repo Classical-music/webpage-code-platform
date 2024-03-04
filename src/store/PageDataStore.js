@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
 
-export const useDataSetStore = defineStore('data-set', _ => {
+export const usePageDataStore = defineStore('data-set', _ => {
     let value = reactive({
         page: null,
         selItem: null
@@ -59,7 +59,14 @@ export const useDataSetStore = defineStore('data-set', _ => {
         // value.selItem.subs.push(itemCtor(type))
     }
 
-    return { page, selItem, setSelItem, resetPage, closePage, addItem }
+    return {
+        page,
+        selItem,
+        setSelItem,
+        resetPage,
+        closePage,
+        addItem
+    }
 })
 
 const ItemCreator = {

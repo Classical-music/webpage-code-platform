@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { useDataSetStore } from '@store/DataSetStore';
+import { usePageDataStore } from '@store/PageDataStore';
 import SimuPage from '@WidgetSimu/SimuPage.vue';
 import SimuEditer from '@WidgetSimu/SimuEditer.vue';
 import SimuPanel from '@WidgetSimu/Base/SimuPanal.vue';
@@ -9,7 +9,7 @@ import SimuLabel from '@WidgetSimu/Base/SimuLabel.vue';
 import SimuLineEdit from '@WidgetSimu/Base/SimuLineEdit.vue';
 import SimuImage from './Base/SimuImage.vue';
 
-let dataSet = useDataSetStore()
+let pageData = usePageDataStore()
 
 const props = defineProps({
     param: [Object, null]
@@ -30,7 +30,6 @@ const getComp = computed(_ => {
 
 const commonStyle = computed(_ => {
   let param = props.param
-  console.log(param)
   return {
     left: param?.rect?.x + 'px',
     top: param?.rect?.y + 'px',
@@ -49,7 +48,7 @@ const isSelect = computed(_ => {
   <div v-if="param" :style="commonStyle" class="common-body">
     <component :is="getComp" :param="param" class="common-class"
       v-drag-move:arg="param"
-      @click.stop="dataSet.setSelItem(param)">
+      @click.stop="pageData.setSelItem(param)">
     </component>
     <SimuEditer v-if="isSelect" :param="param"></SimuEditer>
   </div>
@@ -66,4 +65,4 @@ const isSelect = computed(_ => {
   height: 100%;
   box-sizing: border-box;
 }
-</style>
+</style>@store/PageDataStore

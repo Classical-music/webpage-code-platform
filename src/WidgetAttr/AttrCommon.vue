@@ -1,11 +1,11 @@
 <script setup>
 import { computed } from 'vue'
-import { useDataSetStore } from '@store/DataSetStore.js'
+import { usePageDataStore } from '@store/PageDataStore.js'
 
-const dataSet = useDataSetStore()
+const pageData = usePageDataStore()
 
 const selItem = computed(_ => {
-    return dataSet.selItem
+    return pageData.selItem
 })
 
 const typeList = [
@@ -74,4 +74,4 @@ const typeList = [
     height: 30px;
     box-sizing: border-box;
 }
-</style>
+</style>@store/PageDataStore.js

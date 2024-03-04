@@ -1,13 +1,13 @@
 <script setup>
-import { useDataSetStore } from '@store/DataSetStore';
+import { usePageDataStore } from '@store/PageDataStore';
 import SimuCommon from './SimuCommon.vue';
 
-let dataSet = useDataSetStore()
+let pageData = usePageDataStore()
 </script>
 
 <template>
-  <div class="simu-body" @click="dataSet.setSelItem()">
-    <SimuCommon :param="dataSet.page"></SimuCommon>
+  <div class="simu-body" @click="pageData.setSelItem()">
+    <SimuCommon :param="pageData.page"></SimuCommon>
   </div>
 </template>
 
@@ -18,4 +18,4 @@ let dataSet = useDataSetStore()
   height: 100%;
   user-select: none;
 }
-</style>
+</style>@store/PageDataStore
