@@ -9,7 +9,7 @@ const selItem = computed(_ => {
 })
 
 const typeList = [
-    'Screen',
+    'Page',
     'Panel',
     'Button',
     'Label',

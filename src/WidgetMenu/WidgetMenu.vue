@@ -1,9 +1,10 @@
 <script setup>
 import MenuGroupPage from './MenuGroupPage.vue';
-
+import MenuGroupRouter from './MenuGroupRouter.vue';
 
 const compList = [
-  MenuGroupPage
+  MenuGroupPage,
+  MenuGroupRouter,
 ]
 </script>
 

@@ -1,5 +1,4 @@
 <script setup>
-import { FileMgr } from '@Utils/FileMgr';
 import { usePageDataStore } from '@store/PageDataStore';
 import { usePageMgrStore } from '@store/PageMgrStore';
 import { onMounted } from 'vue';
@@ -38,10 +37,10 @@ onMounted(_ => {
             </div>
         </div>
         <div v-if="pageMgr.isExpand" style="padding-left: 16px;">
-            <div v-for="page in pageMgr.subs"
-                @click="setSelPage(page)"
-                class="item" :style="{background: page.isSel ? 'green' : ''}">
-                {{ page.name }}
+            <div v-for="item in pageMgr.subs"
+                @click="setSelPage(item)"
+                class="item" :style="{background: item.isSel ? 'green' : ''}">
+                {{ item.name }}
             </div>
         </div>
 
@@ -51,6 +50,7 @@ onMounted(_ => {
 <style scoped>
 .body {
     background: grey;
+    border-bottom: 1px solid greenyellow;;
 }
 .title {
     display: flex;
@@ -63,4 +63,4 @@ onMounted(_ => {
 .item:hover {
     background: red;
 }
-</style>@store/PageDataStore
+</style>

@@ -1,29 +1,29 @@
 import { FileMgr } from "@Utils/FileMgr";
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, reactive } from "vue";
 
 const pageDir = '/public/page/'
 let pageId = 0
 export const usePageMgrStore = defineStore('page-mgr', _ => {
-    const data = ref({
+    const data = reactive({
         expand: true,
         selItem: null,
         subs: {}
     })
 
     const isExpand = computed(_ => {
-        return data.value.expand
+        return data.expand
     })
     function doExpand() {
-        data.value.expand = !data.value.expand
+        data.expand = !data.expand
     }
     const subs = computed(_ => {
-        return data.value.subs
+        return data.subs
     })
     async function readPageList() {
         let plist = await FileMgr.readDir(pageDir)
         plist.forEach(pname => {
-            data.value.subs[pname] = {
+            data.subs[pname] = {
                 name: pname,
                 isSel: false,
             }
@@ -34,7 +34,7 @@ export const usePageMgrStore = defineStore('page-mgr', _ => {
         return FileMgr.readFile(pname)
     }
     function genPname() {
-        let pNames = Object.keys(data.value.subs)
+        let pNames = Object.keys(data.subs)
         let pname = null
         while (true) {
             pname = `Page-${pageId++}.json`
@@ -50,10 +50,10 @@ export const usePageMgrStore = defineStore('page-mgr', _ => {
         let str = JSON.stringify(pageData, null, '    ')
         FileMgr.saveFile(ppname, str)
         .then(readPageList)
-        .then(_ => setSel(data.value.subs[pname]))
+        .then(_ => setSel(data.subs[pname]))
     }
     function setSel(item) {
-        let selItem = data.value.selItem
+        let selItem = data.selItem
         if (selItem === item) return false
         if (selItem) {
             selItem.isSel = false
@@ -61,17 +61,17 @@ export const usePageMgrStore = defineStore('page-mgr', _ => {
         if (item) {
             item.isSel = true
         }
-        data.value.selItem = item
+        data.selItem = item
         return true
     }
     function delSel() {
-        let selItem = data.value.selItem
+        let selItem = data.selItem
         if (!selItem) return
 
         FileMgr.delFile(pageDir + selItem.name)
-        delete data.value.subs[selItem.name]
+        delete data.subs[selItem.name]
 
-        setSel(Object.values(data.value.subs)[0])
+        setSel(Object.values(data.subs)[0])
     }
 
     return {
