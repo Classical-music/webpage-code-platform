@@ -10,10 +10,12 @@ export function listenRender() {
 }
 
 function handleReadFile(event, pname) {
-    console.log(pname)
     pname = path.join(__dirname, '..', pname)
-    console.log(pname)
-    return fs.readFileSync(pname, { encoding: "utf-8"})
+    try {
+        return fs.readFileSync(pname, { encoding: "utf-8"})
+    } catch(err) {
+        return "{}"
+    }
 }
 
 function handleSaveFile(event, pname, str) {
@@ -30,6 +32,5 @@ function handleDelFile(event, pname) {
 
 function handleReadDir(event, dirName) {
     pname = path.join(__dirname, '..', dirName)
-    console.log(pname)
     return fs.readdirSync(pname)
 }

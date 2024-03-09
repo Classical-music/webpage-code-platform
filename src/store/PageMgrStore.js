@@ -64,14 +64,14 @@ export const usePageMgrStore = defineStore('page-mgr', _ => {
         data.selItem = item
         return true
     }
-    function delSel() {
+    function delSel(pname) {
         let selItem = data.selItem
-        if (!selItem) return
+        FileMgr.delFile(pageDir + pname)
 
-        FileMgr.delFile(pageDir + selItem.name)
-        delete data.subs[selItem.name]
-
-        setSel(Object.values(data.subs)[0])
+        if (selItem && pname === selItem.name) {
+            setSel(null)
+        }
+        delete data.subs[pname]
     }
 
     return {

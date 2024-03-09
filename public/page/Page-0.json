@@ -1,0 +1,23 @@
+{
+    "type": "Page",
+    "name": "Page-0.json",
+    "isSelect": true,
+    "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 800,
+        "h": 500
+    },
+    "sub": {
+        "type": "Panel",
+        "name": "Panel-1",
+        "isSelect": false,
+        "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 400,
+            "h": 300
+        },
+        "subs": []
+    }
+}

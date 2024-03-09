@@ -1,3 +1,4 @@
+import { FileMgr } from "@Utils/FileMgr";
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 
@@ -5,7 +6,6 @@ let urlId = 0
 export const useRouterMgrStore = defineStore('router-mgr', _ => {
     const data = reactive({
         expand: true,
-        selItem: null,
         subs: {}
     })
 
@@ -18,6 +18,9 @@ export const useRouterMgrStore = defineStore('router-mgr', _ => {
     const subs = computed(_ => {
         return data.subs
     })
+    function init() {
+        readRouter()
+    }
     function genUrl() {
         const urls = Object.keys(data.subs)
         while (true) {
@@ -33,11 +36,28 @@ export const useRouterMgrStore = defineStore('router-mgr', _ => {
             page: null
         }
     }
+    function delRouter(url) {
+        delete data.subs[url]
+    }
+    async function readRouter() {
+        let fname = '/public/router.json'
+        let readData = await FileMgr.readFile(fname)
+        data.subs = JSON.parse(readData)
+    }
+    function saveRouter() {
+        let str = JSON.stringify(data.subs, null, '    ')
+        let fname = '/public/router.json'
+        FileMgr.saveFile(fname, str)
+        alert('保存成功')
+    }
 
     return {
         isExpand,
         doExpand,
         subs,
+        init,
         addRouter,
+        delRouter,
+        saveRouter,
     }
 })

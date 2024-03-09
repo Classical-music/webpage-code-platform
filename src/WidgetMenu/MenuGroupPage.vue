@@ -13,8 +13,8 @@ function addPage() {
     pageData.resetPage()
     pageMgr.addPage(pageData.page)
 }
-function delPage() {
-    pageMgr.delSel()
+function delPage(pname) {
+    pageMgr.delSel(pname)
 }
 // 设置选中的Page
 async function setSelPage(page) {
@@ -31,19 +31,16 @@ onMounted(_ => {
     <div class="body">
         <div class="title" @click="pageMgr.doExpand">
             <div>Page管理</div>
-            <div>
-                <button @click.stop="addPage">新建</button>
-                <button @click.stop="delPage">删除</button>
-            </div>
         </div>
         <div v-if="pageMgr.isExpand" style="padding-left: 16px;">
-            <div v-for="item in pageMgr.subs"
-                @click="setSelPage(item)"
-                class="item" :style="{background: item.isSel ? 'green' : ''}">
-                {{ item.name }}
+            <button class="add-button" @click="addPage">新增</button>
+            <div v-for="item in pageMgr.subs" class="row">
+                <div @click="setSelPage(item)"
+                    :style="{background: item.isSel ? 'green' : ''}"
+                    class="item">{{ item.name }}</div>
+                <button @click.stop="delPage(item.name)" style="cursor: pointer;">删除</button>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -57,10 +54,18 @@ onMounted(_ => {
     justify-content: space-between;
     cursor: pointer;
 }
+.row {
+    display: flex;
+    justify-content: space-between;
+}
 .item {
     cursor: pointer;
 }
 .item:hover {
     background: red;
+}
+button {
+    width: 80px;
+    height: 30px;
 }
 </style>
