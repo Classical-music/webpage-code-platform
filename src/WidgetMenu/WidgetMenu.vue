@@ -1,16 +1,16 @@
 <script setup>
-import MenuGroupPage from './MenuGroupPage.vue';
-import MenuGroupRouter from './MenuGroupRouter.vue';
+import { toRaw } from 'vue';
+import { useMenuStore } from '@store/MenuStore';
 
-const compList = [
-  MenuGroupPage,
-  MenuGroupRouter,
-]
+let menu = useMenuStore()
+
 </script>
 
 <template>
   <div class="container">
-    <component v-for="comp in compList" :is="comp"></component>
+    <div v-for="item in menu.data">
+      <component :is="toRaw(item).comp" :param="item" />
+    </div>
   </div>
 </template>
 

@@ -1,87 +1,113 @@
-import { FileMgr } from "@Utils/FileMgr";
 import { defineStore } from "pinia";
-import { computed, reactive } from "vue";
+import { reactive, ref } from "vue";
+import { FileMgr } from "@Utils/FileMgr";
+import { createPage, usePageDataStore } from "@store/PageDataStore"
+import MenuButton from "@WidgetMenu/MenuButton.vue"
+import MenuItem from "@WidgetMenu/MenuItem.vue"
 
 const pageDir = '/public/page/'
 let pageId = 0
 export const usePageMgrStore = defineStore('page-mgr', _ => {
+    const selItem = ref(null)
     const data = reactive({
-        expand: true,
-        selItem: null,
-        subs: {}
+        addBtn: {
+            comp: MenuButton,
+            name: '新建',
+            clickCb: addPage,
+        },
     })
 
-    const isExpand = computed(_ => {
-        return data.expand
-    })
-    function doExpand() {
-        data.expand = !data.expand
-    }
-    const subs = computed(_ => {
-        return data.subs
-    })
-    async function readPageList() {
-        let plist = await FileMgr.readDir(pageDir)
-        plist.forEach(pname => {
-            data.subs[pname] = {
-                name: pname,
-                isSel: false,
-            }
+    function init() {
+        reset()
+        FileMgr.readDir(pageDir)
+        .then(plist => {
+            plist.forEach(pname => {
+                data[pname] = {
+                    comp: MenuItem,
+                    name: pname,
+                    isSel: false,
+                    clickCb: selPage,
+                    delCb: delPage
+                }
+            })
         })
+
     }
-    function readPage(item) {
-        let pname = pageDir + item.name
-        return FileMgr.readFile(pname)
+
+    function reset() {
+        for (let key in data) {
+            if (key !== 'addBtn') delete data[key]
+        }
     }
+
+    function addPage() {
+        let pname = genPname()
+        let pdata = createPage()
+        pdata.name = pname
+
+        let ppname = pageDir + pname
+        let str = JSON.stringify(pdata, null, '    ')
+        FileMgr.saveFile(ppname, str)
+        .then(init)
+        .then(_ => selPage(data[pname]))
+    }
+
+    function selPage(item) {
+        if (item === selItem.value) return
+        if (selItem.value) {
+            selItem.value.isSel = false
+        }
+
+        if (item) {
+            item.isSel = true
+            loadPage(item.name)
+        }
+        selItem.value = item
+    }
+
+    function delPage(item) {
+        if (item === selItem.value) {
+            selItem.value = null
+            clearPage()
+        }
+        FileMgr.delFile(pageDir + item?.name)
+        delete data[item?.name]
+    }
+
     function genPname() {
-        let pNames = Object.keys(data.subs)
-        let pname = null
+        let pNames = Object.keys(data)
         while (true) {
-            pname = `Page-${pageId++}.json`
+            let pname = `Page-${pageId++}.json`
             if (!pNames.includes(pname)) return pname
         }
     }
-    function addPage(pageData) {
-        // 生成文件名
-        let pname = genPname()
-        pageData.name = pname
 
-        let ppname = pageDir + pname
-        let str = JSON.stringify(pageData, null, '    ')
-        FileMgr.saveFile(ppname, str)
-        .then(readPageList)
-        .then(_ => setSel(data.subs[pname]))
-    }
-    function setSel(item) {
-        let selItem = data.selItem
-        if (selItem === item) return false
-        if (selItem) {
-            selItem.isSel = false
+    function pageList() {
+        let plist = []
+        for (let key in data) {
+            if (key !== 'addBtn') {
+                plist.push(key)
+            }
         }
-        if (item) {
-            item.isSel = true
-        }
-        data.selItem = item
-        return true
-    }
-    function delSel(pname) {
-        let selItem = data.selItem
-        FileMgr.delFile(pageDir + pname)
-
-        if (selItem && pname === selItem.name) {
-            setSel(null)
-        }
-        delete data.subs[pname]
+        return plist
     }
 
     return {
-        isExpand,
-        doExpand,
-        subs,
-        readPageList,
-        readPage,
-        addPage,
-        setSel,
-        delSel,
+        data,
+        init,
+        pageList,
     }
 })
+
+const pageData = usePageDataStore()
+function loadPage(pname) {
+    pname = pageDir + pname
+    FileMgr.readFile(pname)
+    .then(pdata => {
+        pageData.resetPage(JSON.parse(pdata))
+    })
+}
+
+function clearPage() {
+    pageData.closePage()
+}

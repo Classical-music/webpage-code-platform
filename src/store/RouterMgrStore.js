@@ -1,63 +1,82 @@
 import { FileMgr } from "@Utils/FileMgr";
+import MenuButton from "@WidgetMenu/MenuButton.vue";
+import MenuItemRouter from "@WidgetMenu/MenuItemRouter.vue";
 import { defineStore } from "pinia";
-import { computed, reactive } from "vue";
+import { reactive } from "vue";
 
+const urlPrefix = '/url'
 let urlId = 0
+const urlCfgPath = '/public/router.json'
 export const useRouterMgrStore = defineStore('router-mgr', _ => {
     const data = reactive({
-        expand: true,
-        subs: {}
+        addBtn: {
+            comp: MenuButton,
+            name: '新建',
+            clickCb: addRouter,
+        }
     })
 
-    const isExpand = computed(_ => {
-        return data.expand
-    })
-    function doExpand() {
-        data.expand = !data.expand
-    }
-    const subs = computed(_ => {
-        return data.subs
-    })
     function init() {
-        readRouter()
+        reset()
+        FileMgr.readFile(urlCfgPath)
+        .then(rlist => {
+            rlist = JSON.parse(rlist)
+            for (let key in rlist) {
+                let item = rlist[key]
+                data[key] = {
+                    comp: MenuItemRouter,
+                    url: item.url,
+                    page: item.page,
+                    delCb: delRouter,
+                }
+            }
+        })
     }
-    function genUrl() {
-        const urls = Object.keys(data.subs)
-        while (true) {
-            let url = `/url-${urlId++}`
-            if (!urls.includes(url)) return url
+    function reset() {
+        for (let key in data) {
+            if (key !== 'addBtn') delete data[key]
         }
-        return '/url'
-    }
-    function addRouter() {
-        let url = genUrl()
-        data.subs[url] = {
-            url: url,
-            page: null
-        }
-    }
-    function delRouter(url) {
-        delete data.subs[url]
-    }
-    async function readRouter() {
-        let fname = '/public/router.json'
-        let readData = await FileMgr.readFile(fname)
-        data.subs = JSON.parse(readData)
     }
     function saveRouter() {
-        let str = JSON.stringify(data.subs, null, '    ')
-        let fname = '/public/router.json'
-        FileMgr.saveFile(fname, str)
-        alert('保存成功')
+        let routers = {}
+        for (let key in data) {
+            if (key === 'addBtn') continue
+            let item = data[key]
+            routers[key] = {
+                url: item.url,
+                page: item.page
+            }
+        }
+        FileMgr.saveFile(urlCfgPath, JSON.stringify(routers, null, '    '))
+    }
+
+    function addRouter() {
+        let url = genUrl()
+        data[url] = {
+            comp: MenuItemRouter,
+            url: url,
+            page: null,
+            delCb: delRouter
+        }
+        saveRouter()
+    }
+
+    function delRouter(item) {
+        delete data[item?.url]
+        saveRouter()
+    }
+
+    function genUrl() {
+        const urls = Object.keys(data)
+        while (true) {
+            let url = `${urlPrefix}-${urlId++}`
+            if (!urls.includes(url)) return url
+        }
     }
 
     return {
-        isExpand,
-        doExpand,
-        subs,
+        data,
         init,
-        addRouter,
-        delRouter,
         saveRouter,
     }
 })
