@@ -1,0 +1,12 @@
+{
+    "type": "Page",
+    "name": "Page-3.json",
+    "isSelect": false,
+    "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 800,
+        "h": 500
+    },
+    "subs": []
+}

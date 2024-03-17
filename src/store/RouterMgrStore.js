@@ -47,7 +47,33 @@ export const useRouterMgrStore = defineStore('router-mgr', _ => {
                 page: item.page
             }
         }
-        FileMgr.saveFile(urlCfgPath, JSON.stringify(routers, null, '    '))
+        FileMgr.saveFile(urlCfgPath, JSON.stringify(routers, null, '  '))
+
+        genRouter()
+    }
+
+    function genRouter() {
+        let str = ''
+        for (let key in data) {
+            if (key === 'addBtn') continue
+            let item = data[key]
+            if (!item.page) continue
+            let name = item.page.split('.')[0]
+            str += '\n  {'
+                + `\n    path: '${item.url}',`
+                + `\n    name: '${name}',`
+                + `\n    component: () => import('@WidgetPage/${name}.vue')`
+                + `\n  },`
+        }
+        str += '\n'
+
+        FileMgr.readFile('/src/router/index.template.js')
+        .then(template => {
+            console.log(str)
+            console.log(template)
+            let rdata = template.replace("[/*{placeholder}*/]", str)
+            FileMgr.saveFile('/src/router/index.js', rdata)
+        })
     }
 
     function addRouter() {

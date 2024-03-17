@@ -22,12 +22,27 @@ const hasChild = computed(_ => {
 
 async function saveToPage() {
   // 生成当前页的数据
-  let str = JSON.stringify(pageData.page, null, '    ')
+  let str = JSON.stringify(pageData.page, null, '  ')
 
   // 生产当前页的路径名
   let pname = `/public/page/${props.param?.name}`
   FileMgr.saveFile(pname, str)
   alert('保存成功')
+}
+
+function genCode() {
+  // 页面数据代码
+  let str = JSON.stringify(pageData.page, null, '  ')
+
+  FileMgr.readFile('/src/WidgetPage/CtrlPage.template.vue')
+  .then(template => {
+    let pdata = template.replace("[/*{placeholder}*/]", str)
+    let pname = props.param?.name ?? ''
+    pname = pname.split('.')[0]
+    pname = `/src/WidgetPage/${pname}.vue`
+
+    FileMgr.saveFile(pname, pdata)
+  })
 }
 
 function closePage() {
@@ -41,6 +56,7 @@ function closePage() {
     <div class="screen-title">
       <div>{{ param.name }}</div>
       <button style="cursor: pointer;" @click="saveToPage">保存页面</button>
+      <button style="cursor: pointer;" @click="genCode">生成代码</button>
       <button style="cursor: pointer;" @click="closePage">关闭</button>
     </div>
     <div class="screen-container" v-if="hasChild">

@@ -19,6 +19,7 @@ export default defineConfig({
       '@WidgetSimu': fileURLToPath(new URL('./src/WidgetSimu', import.meta.url)),
       '@WidgetAttr': fileURLToPath(new URL('./src/WidgetAttr', import.meta.url)),
       '@WidgetCtrl': fileURLToPath(new URL('./src/WidgetCtrl', import.meta.url)),
+      '@WidgetPage': fileURLToPath(new URL('./src/WidgetPage', import.meta.url)),
     }
   }
 })

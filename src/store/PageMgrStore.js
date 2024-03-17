@@ -50,6 +50,9 @@ export const usePageMgrStore = defineStore('page-mgr', _ => {
         FileMgr.saveFile(ppname, str)
         .then(init)
         .then(_ => selPage(data[pname]))
+        .then(_ => {
+            genCode(pname)
+        })
     }
 
     function selPage(item) {
@@ -111,3 +114,19 @@ function loadPage(pname) {
 function clearPage() {
     pageData.closePage()
 }
+
+function genCode(name) {
+    console.log('111111111111111111111')
+    // 页面数据代码
+    let str = JSON.stringify(pageData.page, null, '  ')
+  
+    FileMgr.readFile('/src/WidgetPage/CtrlPage.template.vue')
+    .then(template => {
+      let pdata = template.replace("[/*{placeholder}*/]", str)
+      let pname = name
+      pname = pname.split('.')[0]
+      pname = `/src/WidgetPage/${pname}.vue`
+  
+      FileMgr.saveFile(pname, pdata)
+    })
+  }

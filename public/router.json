@@ -1,6 +1,18 @@
 {
-    "/url-0": {
-        "url": "/url-0",
-        "page": "Page-0.json"
-    }
+  "/url-0": {
+    "url": "/url-0",
+    "page": "Page-0.json"
+  },
+  "/url-1": {
+    "url": "/url-1",
+    "page": "Page-1.json"
+  },
+  "/url-2": {
+    "url": "/url-2",
+    "page": "Page-2.json"
+  },
+  "/url-3": {
+    "url": "/url-3",
+    "page": "Page-3.json"
+  }
 }

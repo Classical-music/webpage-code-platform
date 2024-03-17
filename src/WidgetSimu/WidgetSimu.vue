@@ -19,4 +19,4 @@ let pageData = usePageDataStore()
   overflow: auto;
   user-select: none;
 }
-</style>@store/PageDataStore
+</style>

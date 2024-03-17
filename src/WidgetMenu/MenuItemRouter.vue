@@ -30,7 +30,9 @@ const selColor = computed(_ => {
 
 <template>
     <div class="item">
-        <div class="left" @click="onClick">{{ param.url }}</div>
+        <div class="left" @click="onClick">
+            <RouterLink :to="param.url">{{ param.url }}</RouterLink>
+        </div>
         <select v-model="param.page" @change="routerMgr.saveRouter">
             <option v-for="item in pageMgr.pageList()" :value="item">{{ item }}</option>
         </select>
