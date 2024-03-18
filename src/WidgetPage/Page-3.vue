@@ -2,7 +2,31 @@
 import { computed } from 'vue';
 import CtrlCommon from '@WidgetCtrl/CtrlCommon.vue';
 
-const pageData = null
+const pageData = {
+  "type": "Page",
+  "name": "Page-3",
+  "isSelect": false,
+  "rect": {
+    "x": 0,
+    "y": 0,
+    "w": 800,
+    "h": 500
+  },
+  "subs": [
+    {
+      "type": "Panel",
+      "name": "Panel-15",
+      "isSelect": true,
+      "rect": {
+        "x": 0,
+        "y": 156,
+        "w": 400,
+        "h": 300
+      },
+      "subs": []
+    }
+  ]
+}
 
 const subs = computed(_ => {
     return pageData?.subs ?? []

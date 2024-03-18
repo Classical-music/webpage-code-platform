@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
-import { usePageMgrStore } from '@store/PageMgrStore'
+import { PageMgr, usePageMenuStore } from '@store/PageMgrStore'
 import MenuGroup from "@WidgetMenu/MenuGroup.vue";
 import { useRouterMgrStore } from "./RouterMgrStore";
 import { useCtrlBaseStore } from "./CtrlBaseStore";
 
-const pageMgr = usePageMgrStore()
+const pageMenu = usePageMenuStore()
 const routerMgr = useRouterMgrStore()
 const ctrlBase = useCtrlBaseStore()
 
@@ -15,14 +15,14 @@ export const useMenuStore = defineStore('menu', _ => {
             comp: MenuGroup,
             name: 'Page管理',
             expand: true,
-            init: pageMgr.init(),
-            subs: pageMgr.data
+            initCb: PageMgr.pageInit,
+            subs: pageMenu.data
         },
         {
             comp: MenuGroup,
             name: '路由管理',
             expand: true,
-            init: routerMgr.init(),
+            initCb: routerMgr.init,
             subs: routerMgr.data
         },
         {
@@ -34,7 +34,7 @@ export const useMenuStore = defineStore('menu', _ => {
                     comp: MenuGroup,
                     name: '基础控件',
                     expand: true,
-                    init: ctrlBase.init(),
+                    initCb: ctrlBase.init,
                     subs: ctrlBase.data
                 },
                 {

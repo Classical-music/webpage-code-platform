@@ -15,8 +15,8 @@ let routes = [
 routes.push(
   {
     path: '/url-0',
-    name: 'Page-0',
-    component: () => import('@WidgetPage/Page-0.vue')
+    name: 'Page-3',
+    component: () => import('@WidgetPage/Page-3.vue')
   },
   {
     path: '/url-1',

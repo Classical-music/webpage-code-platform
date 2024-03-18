@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive } from "vue";
 
-export const usePageDataStore = defineStore('data-set', _ => {
+export const usePageDataStore = defineStore('page-data', _ => {
     let value = reactive({
         page: null,
         selItem: null

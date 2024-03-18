@@ -1,10 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import SimuCommon from '@WidgetSimu/SimuCommon.vue'
-import { usePageDataStore } from '@store/PageDataStore';
-import { FileMgr } from '@Utils/FileMgr';
-
-const pageData = usePageDataStore()
+import { PageMgr } from '@store/PageMgrStore';
 
 const props = defineProps({
   param: Object
@@ -21,32 +18,8 @@ const hasChild = computed(_ => {
 })
 
 async function saveToPage() {
-  // 生成当前页的数据
-  let str = JSON.stringify(pageData.page, null, '  ')
-
-  // 生产当前页的路径名
-  let pname = `/public/page/${props.param?.name}`
-  FileMgr.saveFile(pname, str)
+  PageMgr.savePage(props.param)
   alert('保存成功')
-}
-
-function genCode() {
-  // 页面数据代码
-  let str = JSON.stringify(pageData.page, null, '  ')
-
-  FileMgr.readFile('/src/WidgetPage/CtrlPage.template.vue')
-  .then(template => {
-    let pdata = template.replace("[/*{placeholder}*/]", str)
-    let pname = props.param?.name ?? ''
-    pname = pname.split('.')[0]
-    pname = `/src/WidgetPage/${pname}.vue`
-
-    FileMgr.saveFile(pname, pdata)
-  })
-}
-
-function closePage() {
-  pageData.closePage()
 }
 
 </script>
@@ -54,10 +27,9 @@ function closePage() {
 <template>
   <div :style="bodyStyle" class="screen-body">
     <div class="screen-title">
-      <div>{{ param.name }}</div>
+      <div>{{ param?.name }}</div>
       <button style="cursor: pointer;" @click="saveToPage">保存页面</button>
-      <button style="cursor: pointer;" @click="genCode">生成代码</button>
-      <button style="cursor: pointer;" @click="closePage">关闭</button>
+      <button style="cursor: pointer;" @click="PageMgr.closePage">关闭</button>
     </div>
     <div class="screen-container" v-if="hasChild">
       <SimuCommon v-for="item in param.subs" :param="item"></SimuCommon>
@@ -91,4 +63,4 @@ function closePage() {
   background: #ffffff;
   position: relative;
 }
-</style>@store/PageDataStore
+</style>

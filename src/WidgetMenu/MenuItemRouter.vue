@@ -1,9 +1,9 @@
 <script setup>
-import { usePageMgrStore } from '@store/PageMgrStore';
+import { usePageMenuStore } from '@store/PageMgrStore';
 import { useRouterMgrStore } from '@store/RouterMgrStore';
 import { computed } from 'vue';
 
-let pageMgr = usePageMgrStore()
+let pageMenu = usePageMenuStore()
 let routerMgr = useRouterMgrStore()
 
 const props = defineProps({
@@ -34,7 +34,7 @@ const selColor = computed(_ => {
             <RouterLink :to="param.url">{{ param.url }}</RouterLink>
         </div>
         <select v-model="param.page" @change="routerMgr.saveRouter">
-            <option v-for="item in pageMgr.pageList()" :value="item">{{ item }}</option>
+            <option v-for="item in pageMenu.pageList()" :value="item">{{ item }}</option>
         </select>
         <button v-if="param?.delCb" @click="onDel">删除</button>
     </div>
