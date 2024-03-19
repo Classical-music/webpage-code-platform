@@ -1,71 +1,3 @@
-import { defineStore } from "pinia";
-import { computed, reactive } from "vue";
-
-export const usePageDataStore = defineStore('page-data', _ => {
-    let value = reactive({
-        page: null,
-        selItem: null
-    })
-
-    const page = computed(_ => {
-        return value.page
-    })
-
-    const selItem = computed(_ => {
-        return value.selItem
-    })
-
-    function setSelItem(item = null) {
-        if (value.selItem) {
-            value.selItem.isSelect = false
-        }
-
-        value.selItem = item
-        if (value.selItem) {
-            value.selItem.isSelect = true
-        }
-    }
-
-    function resetPage(page = null) {
-        if (page)
-            value.page = page
-        else
-            value.page = createPage()
-        setSelItem(value.page)
-    }
-
-    function closePage() {
-        value.page = null
-        setSelItem(value.page)
-    }
-
-    function addItem(type) {
-        let parent = value.selItem
-        if (!parent || !parent.subs) parent = value.page
-        if (!parent || !parent.subs) {
-            console.warn(`无法添加控件`)
-            return
-        }
-
-        let itemCtor = ItemCreator[type]
-        if (typeof itemCtor !== 'function') {
-            console.warn(`控件类型 ${type} 不支持, 无法创建对象元素`)
-            return
-        }
-
-        parent.subs.push(itemCtor(type))
-    }
-
-    return {
-        page,
-        selItem,
-        setSelItem,
-        resetPage,
-        closePage,
-        addItem
-    }
-})
-
 export function createPage() {
     let item = getCommon("Page")
     item.rect = { x: 0, y: 0, w: 800, h: 500 }
@@ -92,6 +24,15 @@ const ItemCreator = {
     TableBase: createTableBase,
 }
 
+export function createCtrl(type) {
+    let itemCtor = ItemCreator[type]
+    if (typeof itemCtor !== 'function') {
+        console.warn(`控件类型 ${type} 不支持, 无法创建对象元素`)
+        return null
+    }
+
+    return itemCtor(type)
+}
 
 function createPanel(type) {
     let item = getCommon(type)

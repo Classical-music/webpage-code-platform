@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { usePageDataStore } from '@store/PageDataStore';
+import { usePageDataStore } from "@store/PageMgrStore";
 import SimuPage from '@WidgetSimu/SimuPage.vue';
 import SimuEditer from '@WidgetSimu/SimuEditer.vue';
 import SimuPanel from '@WidgetSimu/Base/SimuPanal.vue';

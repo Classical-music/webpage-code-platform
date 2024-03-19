@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { usePageDataStore } from '@store/PageDataStore.js'
+import { usePageDataStore } from "@store/PageMgrStore";
 
 const pageData = usePageDataStore()
 

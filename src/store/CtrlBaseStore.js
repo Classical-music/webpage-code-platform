@@ -1,7 +1,7 @@
 import MenuItem from "@WidgetMenu/MenuItem.vue";
 import { defineStore } from "pinia";
 import { reactive } from "vue";
-import { usePageDataStore } from "./PageDataStore";
+import { usePageDataStore } from "@store/PageMgrStore";
 
 const pageData = usePageDataStore()
 

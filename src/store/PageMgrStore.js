@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { FileMgr } from "@Utils/FileMgr";
-import { createPage, usePageDataStore } from "@store/PageDataStore";
+import { createCtrl, createPage } from "@Utils/CtrlCreator";
 import MenuButton from "@WidgetMenu/MenuButton.vue";
 import MenuItem from "@WidgetMenu/MenuItem.vue";
 
@@ -73,6 +73,68 @@ export const usePageMenuStore = defineStore("page-menu", (_) => {
     isSel, selPage, delPage,
   };
 });
+
+export const usePageDataStore = defineStore('page-data', _ => {
+  let value = reactive({
+      page: null,
+      selItem: null
+  })
+
+  const page = computed(_ => {
+      return value.page
+  })
+
+  const selItem = computed(_ => {
+      return value.selItem
+  })
+
+  function setSelItem(item = null) {
+      if (value.selItem) {
+          value.selItem.isSelect = false
+      }
+
+      value.selItem = item
+      if (value.selItem) {
+          value.selItem.isSelect = true
+      }
+  }
+
+  function resetPage(page = null) {
+      if (page)
+          value.page = page
+      else
+          value.page = createPage()
+      setSelItem(value.page)
+  }
+
+  function closePage() {
+      value.page = null
+      setSelItem(value.page)
+  }
+
+  function addItem(type) {
+      let parent = value.selItem
+      if (!parent || !parent.subs) parent = value.page
+      if (!parent || !parent.subs) {
+          console.warn(`无法添加控件`)
+          return
+      }
+
+      let item = createCtrl(type)
+      if (item) {
+        parent.subs.push(item)
+      }
+  }
+
+  return {
+      page,
+      selItem,
+      setSelItem,
+      resetPage,
+      closePage,
+      addItem
+  }
+})
 
 const pageCfgDir = '/public/page/'
 const pageCompDir = '/src/WidgetPage/'

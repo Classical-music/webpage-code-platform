@@ -7,6 +7,8 @@ import { reactive } from "vue";
 const urlPrefix = '/url'
 let urlId = 0
 const urlCfgPath = '/public/router.json'
+const codeTempPath = '/src/template/router.template.js'
+const codePath = '/src/router/index.js'
 export const useRouterMgrStore = defineStore('router-mgr', _ => {
     const data = reactive({
         addBtn: {
@@ -67,12 +69,10 @@ export const useRouterMgrStore = defineStore('router-mgr', _ => {
         }
         str += '\n'
 
-        FileMgr.readFile('/src/router/index.template.js')
+        FileMgr.readFile(codeTempPath)
         .then(template => {
-            console.log(str)
-            console.log(template)
             let rdata = template.replace("[/*{placeholder}*/]", str)
-            FileMgr.saveFile('/src/router/index.js', rdata)
+            FileMgr.saveFile(codePath, rdata)
         })
     }
 

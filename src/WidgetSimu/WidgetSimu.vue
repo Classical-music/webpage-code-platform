@@ -1,5 +1,5 @@
 <script setup>
-import { usePageDataStore } from '@store/PageDataStore';
+import { usePageDataStore } from "@store/PageMgrStore";
 import SimuCommon from './SimuCommon.vue';
 
 let pageData = usePageDataStore()
