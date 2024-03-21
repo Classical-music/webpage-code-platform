@@ -4,10 +4,12 @@ import { PageMgr, usePageMenuStore } from '@store/PageMgrStore'
 import MenuGroup from "@WidgetMenu/MenuGroup.vue";
 import { useRouterMgrStore } from "./RouterMgrStore";
 import { useCtrlBaseStore } from "./CtrlBaseStore";
+import { useCtrlCustomStore } from "./CtrlCustomStore";
 
 const pageMenu = usePageMenuStore()
 const routerMgr = useRouterMgrStore()
 const ctrlBase = useCtrlBaseStore()
+const ctrlCustom = useCtrlCustomStore()
 
 export const useMenuStore = defineStore('menu', _ => {
     const data = reactive([
@@ -41,7 +43,8 @@ export const useMenuStore = defineStore('menu', _ => {
                     comp: MenuGroup,
                     name: '自定义控件',
                     expand: true,
-                    subs: []
+                    initCb: ctrlCustom.init,
+                    subs: ctrlCustom.data
                 }
             ]
         }

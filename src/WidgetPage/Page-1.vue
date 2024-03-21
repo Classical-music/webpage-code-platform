@@ -12,7 +12,20 @@ const pageData = {
     "w": 800,
     "h": 500
   },
-  "subs": []
+  "subs": [
+    {
+      "type": "Panel",
+      "name": "Panel-0",
+      "isSelect": true,
+      "rect": {
+        "x": 193,
+        "y": 73,
+        "w": 400,
+        "h": 300
+      },
+      "subs": []
+    }
+  ]
 }
 
 const subs = computed(_ => {
