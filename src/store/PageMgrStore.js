@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { FileMgr } from "@Utils/FileMgr";
-import { createCtrl, createPage } from "@Utils/CtrlCreator";
+import { createCtrl, createPage } from "@Utils/CtrlCtor";
 import MenuButton from "@WidgetMenu/MenuButton.vue";
 import MenuItem from "@WidgetMenu/MenuItem.vue";
 

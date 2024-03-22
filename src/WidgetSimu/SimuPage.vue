@@ -17,7 +17,7 @@ const hasChild = computed(_ => {
   return subs.length > 0
 })
 
-async function saveToPage() {
+function saveToPage() {
   PageMgr.savePage(props.param)
   alert('保存成功')
 }

@@ -5,8 +5,13 @@ import { reactive } from "vue";
 import { FileMgr } from "@Utils/FileMgr";
 
 const ctrlCfgPath = '/public/ctrl.json'
+
 const ctrlCtorTempPath = '/src/template/CtrlCtor.template.js'
 const ctrlCtorPath = '/src/Utils/CtrlCtor.js'
+
+const ctrlSimuTempPath = '/src/template/CtrlSimu.template.vue'
+const ctrlSimuDir = '/src/WidgetSimu/Custom/Simu'
+
 export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
     const data = reactive({
         addBtn: {
@@ -27,6 +32,7 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
                     name: key,
                     attr: item.attr,
                     isSel: false,
+                    clickCb: param => console.log(11111, param),
                     delCb: param => delCtrl(param?.name)
                 }
             }
@@ -52,7 +58,10 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         // 生成自定义控件的 creator 函数代码
         genCreator()
     
-        // 生成自定义控件组件代码;
+        // 生成自定义控件模拟组件代码;
+        genCtrlSimu(ctrlName)
+
+        // 生成自定义控件组件代码；
     }
 
     function delCtrl(name) {
@@ -64,6 +73,10 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
 
         // 重新生成 creator 函数代码
         genCreator()
+
+        // 删除自定义控件模拟组件代码
+        let simuPath = ctrlSimuDir + name + '.vue'
+        FileMgr.delFile(simuPath)
 
         // 删除自定义控件组件代码
     }
@@ -101,6 +114,19 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
             let rdata = template.replace("[/*{placeholder}*/]", str1)
                                 .replace("{/*{placeholder}*/}", str2)
             FileMgr.saveFile(ctrlCtorPath, rdata)
+        })
+    }
+
+    function genCtrlSimu(ctrlName) {
+        let str = '{'
+        str += `\n    type: '${ctrlName}',`
+        str += "\n    main: 'Panel',"
+        str += '\n}'
+        FileMgr.readFile(ctrlSimuTempPath)
+        .then(template => {
+            let rdata = template.replace("[/*{placeholder}*/]", str)
+            let fname =  ctrlSimuDir + ctrlName + '.vue'
+            FileMgr.saveFile(fname, rdata)
         })
     }
 

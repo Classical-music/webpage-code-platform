@@ -5,7 +5,7 @@ import CtrlCommon from '@WidgetCtrl/CtrlCommon.vue';
 const pageData = {
   "type": "Page",
   "name": "Page-0",
-  "isSelect": true,
+  "isSelect": false,
   "rect": {
     "x": 0,
     "y": 0,
@@ -16,7 +16,7 @@ const pageData = {
     {
       "type": "Panel",
       "name": "Panel-2",
-      "isSelect": false,
+      "isSelect": true,
       "rect": {
         "x": 347,
         "y": 189,
@@ -35,6 +35,18 @@ const pageData = {
             "h": 121
           },
           "subs": []
+        },
+        {
+          "type": "Label",
+          "name": "Label-0",
+          "isSelect": false,
+          "rect": {
+            "x": 29,
+            "y": 175,
+            "w": 100,
+            "h": 30
+          },
+          "text": "label"
         }
       ]
     },
