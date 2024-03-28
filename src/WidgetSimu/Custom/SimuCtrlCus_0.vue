@@ -6,7 +6,21 @@ const props = defineProps({
     param: Object
 })
 
-const pageData = [/*{placeholder}*/]
+const pageData = {
+  "type": "CtrlCus_0",
+  "main": {
+    "type": "Panel",
+    "name": "Panel-0",
+    "isSelect": false,
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 400,
+      "h": 300
+    },
+    "subs": []
+  }
+}
 
 const main = computed(_ => {
     return pageData?.main

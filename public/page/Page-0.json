@@ -10,77 +10,15 @@
   },
   "subs": [
     {
-      "type": "Panel",
-      "name": "Panel-2",
+      "type": "CtrlCus_0",
+      "name": "CtrlCus_0-0",
       "isSelect": true,
       "rect": {
-        "x": 347,
-        "y": 189,
-        "w": 360,
-        "h": 232
-      },
-      "subs": [
-        {
-          "type": "Panel",
-          "name": "Panel-3",
-          "isSelect": false,
-          "rect": {
-            "x": 120,
-            "y": 51,
-            "w": 155,
-            "h": 121
-          },
-          "subs": []
-        },
-        {
-          "type": "Label",
-          "name": "Label-0",
-          "isSelect": false,
-          "rect": {
-            "x": 29,
-            "y": 175,
-            "w": 100,
-            "h": 30
-          },
-          "text": "label"
-        }
-      ]
-    },
-    {
-      "type": "Label",
-      "name": "Label-0",
-      "isSelect": false,
-      "rect": {
-        "x": 163,
-        "y": 283,
+        "x": 254,
+        "y": 201,
         "w": 100,
         "h": 30
-      },
-      "text": "label"
-    },
-    {
-      "type": "Image",
-      "name": "Image-1",
-      "isSelect": false,
-      "rect": {
-        "x": 85,
-        "y": 314,
-        "w": 50,
-        "h": 50
-      },
-      "src": ""
-    },
-    {
-      "type": "Button",
-      "name": "Button-2",
-      "isSelect": false,
-      "rect": {
-        "x": 167,
-        "y": 379,
-        "w": 100,
-        "h": 30
-      },
-      "text": "button"
+      }
     }
   ]
 }

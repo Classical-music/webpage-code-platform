@@ -1,24 +1,15 @@
 <script setup>
-import { computed } from 'vue';
-import CtrlPanel from '@WidgetCtrl/CtrlPanel.vue'
-import CtrlLabel from '@WidgetCtrl/CtrlLabel.vue'
-import CtrlImage from '@WidgetCtrl/CtrlImage.vue'
-import CtrlButton from '@WidgetCtrl/CtrlButton.vue'
+import { computed, toRaw } from 'vue';
+import { compCtrl } from '@Utils/CtrlMgr';
 
 
 const props = defineProps({
     param: Object
 })
 
-const compDict = {
-    Panel: CtrlPanel,
-    Label: CtrlLabel,
-    Image: CtrlImage,
-    Button: CtrlButton,
-}
-const comp = computed(_ => {
-    console.log(props.param?.type)
-    return compDict[props.param?.type]
+const getComp = computed(_ => {
+    let type = props?.param?.type ?? 'Panel'
+    return compCtrl(type)
 })
 
 const commonStyle = computed(_ => {
@@ -34,7 +25,7 @@ const commonStyle = computed(_ => {
 </script>
 
 <template>
-    <component :is="comp" class="common" :style="commonStyle" :param="param"></component>
+    <component :is="toRaw(getComp.value)" class="common" :style="commonStyle" :param="param" />
 </template>
 
 <style scoped>

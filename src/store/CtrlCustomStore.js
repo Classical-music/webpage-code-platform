@@ -3,14 +3,21 @@ import MenuItem from "@WidgetMenu/MenuItem.vue";
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 import { FileMgr } from "@Utils/FileMgr";
+import { usePageDataStore } from "./PageMgrStore";
+import { ctrlItemCtor } from "@Utils/CtrlMgr";
+
+const pageData = usePageDataStore()
 
 const ctrlCfgPath = '/public/ctrl.json'
 
-const ctrlCtorTempPath = '/src/template/CtrlCtor.template.js'
-const ctrlCtorPath = '/src/Utils/CtrlCtor.js'
+const ctrlMgrTempPath = '/src/template/CtrlMgr.template.js'
+const ctrlMgrPath = '/src/Utils/CtrlMgr.js'
 
 const ctrlSimuTempPath = '/src/template/CtrlSimu.template.vue'
 const ctrlSimuDir = '/src/WidgetSimu/Custom/Simu'
+
+const ctrlCusTempPath = '/src/template/CtrlCus.template.vue'
+const ctrlCusDir = '/src/WidgetCtrl/Custom/Ctrl'
 
 export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
     const data = reactive({
@@ -32,7 +39,7 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
                     name: key,
                     attr: item.attr,
                     isSel: false,
-                    clickCb: param => console.log(11111, param),
+                    clickCb: addCtrlItem,
                     delCb: param => delCtrl(param?.name)
                 }
             }
@@ -55,13 +62,14 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         // 保存配置
         saveCtrlCfg()
     
-        // 生成自定义控件的 creator 函数代码
-        genCreator()
-    
         // 生成自定义控件模拟组件代码;
         genCtrlSimu(ctrlName)
 
-        // 生成自定义控件组件代码；
+        // 生成自定义控件组件代码
+        genCtrlCus(ctrlName)
+        
+        // 生成自定义控件的 creator 函数代码
+        genCtrlMgr()
     }
 
     function delCtrl(name) {
@@ -72,13 +80,15 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         saveCtrlCfg()
 
         // 重新生成 creator 函数代码
-        genCreator()
+        genCtrlMgr()
 
         // 删除自定义控件模拟组件代码
         let simuPath = ctrlSimuDir + name + '.vue'
         FileMgr.delFile(simuPath)
 
         // 删除自定义控件组件代码
+        let ctrlPath = ctrlCusDir + name + '.vue'
+        FileMgr.delFile(ctrlPath)
     }
 
     function saveCtrlCfg() {
@@ -94,40 +104,59 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         FileMgr.saveFile(ctrlCfgPath, JSON.stringify(ctrls, null, '  '))
     }
 
-    function genCreator() {
-        let str1 = '{'
-        let str2 = ''
+    function genCtrlMgr() {
+        let str = ''
         for (let key in data) {
             if (key === 'addBtn') continue
-            str1 += `\n    ${key}: create${key},`
-
-            str2 += `\nfunction create${key}(type) {`
-            str2 += '\n    let item = getCommon(type)'
-            str2 += '\n    item.rect = { x: 0, y: 0, w: 100, h: 30 }'
-            str2 += '\n    return item'
-            str2 += '\n}'
+            str += `function create${key}() {`
+            str += `\n    let item = getCommon('${key}')`
+            str += '\n    item.rect = { x: 0, y: 0, w: 100, h: 30 }'
+            str += '\n    return item'
+            str += '\n}'
+            str += `\nCtrlMgr['${key}'] = {`
+            str += `\n    itemCtor: create${key},`
+            str += `\n    compCtrl: _ => import('@WidgetCtrl/Custom/Ctrl${key}.vue'),`
+            str += `\n    compSimu: _ => import('@WidgetSimu/Custom/Simu${key}.vue'),`
+            str += '\n}\n\n'
         }
-        str1 += '\n}'
+        str += ''
 
-        FileMgr.readFile(ctrlCtorTempPath)
+        FileMgr.readFile(ctrlMgrTempPath)
         .then(template => {
-            let rdata = template.replace("[/*{placeholder}*/]", str1)
-                                .replace("{/*{placeholder}*/}", str2)
-            FileMgr.saveFile(ctrlCtorPath, rdata)
+            let rdata = template.replace("[/*{placeholder}*/]", str)
+            FileMgr.saveFile(ctrlMgrPath, rdata)
         })
     }
 
     function genCtrlSimu(ctrlName) {
-        let str = '{'
-        str += `\n    type: '${ctrlName}',`
-        str += "\n    main: 'Panel',"
-        str += '\n}'
         FileMgr.readFile(ctrlSimuTempPath)
         .then(template => {
+            let mainName = data[ctrlName].attr.main
+            let str = JSON.stringify({
+                type: ctrlName,
+                main: ctrlItemCtor(mainName)
+            }, null, '  ')
             let rdata = template.replace("[/*{placeholder}*/]", str)
             let fname =  ctrlSimuDir + ctrlName + '.vue'
             FileMgr.saveFile(fname, rdata)
         })
+    }
+    function genCtrlCus(ctrlName) {
+        FileMgr.readFile(ctrlCusTempPath)
+        .then(template => {
+            let mainName = data[ctrlName].attr.main
+            let str = JSON.stringify({
+                type: ctrlName,
+                main: ctrlItemCtor(mainName)
+            }, null, '  ')
+            let rdata = template.replace("[/*{placeholder}*/]", str)
+            let fname = ctrlCusDir + ctrlName + '.vue'
+            FileMgr.saveFile(fname, rdata)
+        })
+    }
+
+    function addCtrlItem(item) {
+        pageData.addItem(item.name)
     }
 
     let ctrlId = 0
@@ -147,6 +176,6 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
 
 function createCtrlCfg() {
     return {
-
+        main: 'Panel'
     }
 }

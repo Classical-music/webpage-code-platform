@@ -1,13 +1,8 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, toRaw } from 'vue';
 import { usePageDataStore } from "@store/PageMgrStore";
-import SimuPage from '@WidgetSimu/SimuPage.vue';
+import { compSimu } from '@Utils/CtrlMgr'
 import SimuEditer from '@WidgetSimu/SimuEditer.vue';
-import SimuPanel from '@WidgetSimu/Base/SimuPanal.vue';
-import SimuButton from '@WidgetSimu/Base/SimuButton.vue';
-import SimuLabel from '@WidgetSimu/Base/SimuLabel.vue';
-import SimuLineEdit from '@WidgetSimu/Base/SimuLineEdit.vue';
-import SimuImage from './Base/SimuImage.vue';
 
 let pageData = usePageDataStore()
 
@@ -15,17 +10,9 @@ const props = defineProps({
     param: [Object, null]
 })
 
-const compDict = {
-  Page: SimuPage,
-  Panel: SimuPanel,
-  Button: SimuButton,
-  Label: SimuLabel,
-  LineEdit: SimuLineEdit,
-  Image: SimuImage,
-}
 const getComp = computed(_ => {
   let type = props.param?.type ?? 'Page'
-  return compDict[type]
+  return compSimu(type)
 })
 
 const commonStyle = computed(_ => {
@@ -46,7 +33,7 @@ const isSelect = computed(_ => {
 
 <template>
   <div v-if="param" :style="commonStyle" class="common-body">
-    <component :is="getComp" :param="param" class="common-class"
+    <component :is="toRaw(getComp?.value)" :param="param" class="common-class"
       v-drag-move:arg="param"
       @click.stop="pageData.setSelItem(param)">
     </component>

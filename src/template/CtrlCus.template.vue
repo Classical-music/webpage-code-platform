@@ -1,27 +1,26 @@
 <script setup>
 import { computed, toRaw } from 'vue';
-import { compSimu } from '@Utils/CtrlMgr';
+import { compCtrl } from '@Utils/CtrlMgr';
 
 const props = defineProps({
-    param: Object
+  param: Object
 })
 
 const pageData = [/*{placeholder}*/]
 
 const main = computed(_ => {
-    return pageData?.main
+  return pageData?.main
 })
 
 const getComp = computed(_ => {
   let type = pageData?.main?.type ?? 'Panel'
-  return compSimu(type)
+  return compCtrl(type)
 })
 
 </script>
 
 <template>
-    <component :is="toRaw(getComp.value)" :param="main" />
+  <component :is="toRaw(getComp?.value)" :param="main" />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

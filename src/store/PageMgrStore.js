@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { FileMgr } from "@Utils/FileMgr";
-import { createCtrl, createPage } from "@Utils/CtrlCtor";
 import MenuButton from "@WidgetMenu/MenuButton.vue";
 import MenuItem from "@WidgetMenu/MenuItem.vue";
+import { ctrlItemCtor } from "@Utils/CtrlMgr";
 
 export const usePageMenuStore = defineStore("page-menu", (_) => {
   const selItem = ref(null);
@@ -97,13 +97,14 @@ export const usePageDataStore = defineStore('page-data', _ => {
       if (value.selItem) {
           value.selItem.isSelect = true
       }
+      console.log(value.selItem)
   }
 
   function resetPage(page = null) {
       if (page)
           value.page = page
       else
-          value.page = createPage()
+          value.page = ctrlItemCtor('Page')
       setSelItem(value.page)
   }
 
@@ -114,13 +115,14 @@ export const usePageDataStore = defineStore('page-data', _ => {
 
   function addItem(type) {
       let parent = value.selItem
+      console.log(parent)
       if (!parent || !parent.subs) parent = value.page
       if (!parent || !parent.subs) {
           console.warn(`无法添加控件`)
           return
       }
 
-      let item = createCtrl(type)
+      let item = ctrlItemCtor(type)
       if (item) {
         parent.subs.push(item)
       }
@@ -174,7 +176,7 @@ function addNewPage() {
   // 生成文件名
   let pageName = newPageName()
   // 生成基础数据
-  let pdata = createPage()
+  let pdata = ctrlItemCtor('Page')
   pdata.name = pageName
 
   // 保存Page
