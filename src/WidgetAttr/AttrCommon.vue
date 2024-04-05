@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { usePageDataStore } from "@store/PageMgrStore";
+import { allCtrls } from '@Utils/CtrlMgr';
 
 const pageData = usePageDataStore()
 
@@ -8,24 +9,31 @@ const selItem = computed(_ => {
     return pageData.selItem
 })
 
-const typeList = [
-    'Page',
-    'Panel',
-    'Button',
-    'Label',
-    'LineEdit',
-    'Image',
-]
+const AttrList = {
+    type: {
+        name: '控件类型',
+    }
+}
 
 </script>
 
 <template>
     <div v-if="selItem">
+        <div v-for="attr in AttrList" class="attr-row">
+            <label class="attr-left-label">{{ attr.name }}: </label>
+        </div>
+    </div>
+    <div v-if="selItem">
         <div class="attr-row">
             <label class="attr-left-label">控件类型:</label>
             <select v-model="selItem.type" class="attr-right-val">
-                <option v-for="item in typeList" :value="item">{{ item }}</option>
+                <option v-for="item in allCtrls" :value="item">{{ item }}</option>
             </select>
+        </div>
+
+        <div class="attr-row">
+            <label class="attr-left-label">控件名称</label>
+            <input v-model="selItem.name">
         </div>
 
         <div class="attr-row">

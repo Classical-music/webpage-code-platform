@@ -27,7 +27,7 @@ export const usePageMenuStore = defineStore("page-menu", (_) => {
             delCb: param => PageMgr.delPage(param?.name),
         }
     })
-}
+  }
 
   function reset() {
     for (let key in data) {
@@ -97,7 +97,6 @@ export const usePageDataStore = defineStore('page-data', _ => {
       if (value.selItem) {
           value.selItem.isSelect = true
       }
-      console.log(value.selItem)
   }
 
   function resetPage(page = null) {
@@ -113,18 +112,22 @@ export const usePageDataStore = defineStore('page-data', _ => {
       setSelItem(value.page)
   }
 
+  function hasChild(item) {
+    return item && item.addChild
+  }
+
   function addItem(type) {
       let parent = value.selItem
       console.log(parent)
-      if (!parent || !parent.subs) parent = value.page
-      if (!parent || !parent.subs) {
+      if (!hasChild(parent)) parent = value.page
+      if (!hasChild(parent)) {
           console.warn(`无法添加控件`)
           return
       }
 
       let item = ctrlItemCtor(type)
       if (item) {
-        parent.subs.push(item)
+        parent.addChild(item)
       }
   }
 

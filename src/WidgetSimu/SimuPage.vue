@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import SimuCommon from '@WidgetSimu/SimuCommon.vue'
 import { PageMgr } from '@store/PageMgrStore';
 
@@ -7,8 +7,10 @@ const props = defineProps({
   param: Object
 })
 
-const bodyStyle = computed(_ => {
-  return {
+onMounted(_ => {
+  let subs = props?.param?.subs ?? null
+  if (subs) {
+    props.param.addChild = child => subs.push(child)
   }
 })
 
@@ -25,7 +27,7 @@ function saveToPage() {
 </script>
 
 <template>
-  <div :style="bodyStyle" class="screen-body">
+  <div class="screen-body">
     <div class="screen-title">
       <div>{{ param?.name }}</div>
       <button style="cursor: pointer;" @click="saveToPage">保存页面</button>

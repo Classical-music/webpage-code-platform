@@ -1,12 +1,18 @@
 <script setup>
-import { computed, toRaw } from 'vue';
+import { computed, onMounted, reactive, toRaw } from 'vue';
 import { compSimu } from '@Utils/CtrlMgr';
 
 const props = defineProps({
     param: Object
 })
 
-const pageData = [/*{placeholder}*/]
+const pageData = reactive([/*{placeholder}*/])
+
+onMounted(_ => {
+    props.param.addChild = function(item) {
+        pageData.main.subs.push(item)
+    }
+})
 
 const main = computed(_ => {
     return pageData?.main

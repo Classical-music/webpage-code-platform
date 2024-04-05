@@ -28,6 +28,8 @@ export const CtrlMgr = {
     },
 }
 
+export const baseCtrls = Object.keys(CtrlMgr)
+
 export function ctrlItemCtor(type) {
     let itemCtor = CtrlMgr[type]?.itemCtor
     if (typeof itemCtor !== 'function') {
@@ -65,13 +67,12 @@ export function compSimu(type) {
     return comp
 }
 
-export function createPage() {
+function createPage() {
     let item = getCommon("Page")
     item.rect = { x: 0, y: 0, w: 800, h: 500 }
     item.subs = []
     return item
 }
-
 function createPanel() {
     let item = getCommon('Panel')
     item.rect = { x: 0, y: 0, w: 400, h: 300 }
@@ -178,3 +179,6 @@ CtrlMgr['CtrlCus_0'] = {
     compSimu: _ => import('@WidgetSimu/Custom/SimuCtrlCus_0.vue'),
 }
 
+
+
+export const allCtrls = Object.keys(CtrlMgr)

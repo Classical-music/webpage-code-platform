@@ -8,14 +8,18 @@ import { ctrlItemCtor } from "@Utils/CtrlMgr";
 
 const pageData = usePageDataStore()
 
+// 配置文件
 const ctrlCfgPath = '/public/ctrl.json'
 
+// 控件管理
 const ctrlMgrTempPath = '/src/template/CtrlMgr.template.js'
 const ctrlMgrPath = '/src/Utils/CtrlMgr.js'
 
+// 模拟控件
 const ctrlSimuTempPath = '/src/template/CtrlSimu.template.vue'
 const ctrlSimuDir = '/src/WidgetSimu/Custom/Simu'
 
+// 控件
 const ctrlCusTempPath = '/src/template/CtrlCus.template.vue'
 const ctrlCusDir = '/src/WidgetCtrl/Custom/Ctrl'
 
@@ -50,7 +54,7 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         // 生成自定义控件名, 及其对应的属性
         let ctrlName = newCtrlName()
         let ctrlCfg = createCtrlCfg()
-        ctrlCfg.name = ctrlName
+        ctrlCfg.type = ctrlName
         data[ctrlName] = {
             comp: MenuItem,
             name: ctrlName,
@@ -131,11 +135,7 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
     function genCtrlSimu(ctrlName) {
         FileMgr.readFile(ctrlSimuTempPath)
         .then(template => {
-            let mainName = data[ctrlName].attr.main
-            let str = JSON.stringify({
-                type: ctrlName,
-                main: ctrlItemCtor(mainName)
-            }, null, '  ')
+            let str = JSON.stringify(data[ctrlName].attr, null, '  ')
             let rdata = template.replace("[/*{placeholder}*/]", str)
             let fname =  ctrlSimuDir + ctrlName + '.vue'
             FileMgr.saveFile(fname, rdata)
@@ -176,6 +176,7 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
 
 function createCtrlCfg() {
     return {
-        main: 'Panel'
+        mainType: 'Panel',
+        main: ctrlItemCtor('Panel')
     }
 }

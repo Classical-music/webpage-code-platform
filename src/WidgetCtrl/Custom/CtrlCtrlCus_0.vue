@@ -7,19 +7,7 @@ const props = defineProps({
 })
 
 const pageData = {
-  "type": "CtrlCus_0",
-  "main": {
-    "type": "Panel",
-    "name": "Panel-1",
-    "isSelect": false,
-    "rect": {
-      "x": 0,
-      "y": 0,
-      "w": 400,
-      "h": 300
-    },
-    "subs": []
-  }
+  "type": "CtrlCus_0"
 }
 
 const main = computed(_ => {

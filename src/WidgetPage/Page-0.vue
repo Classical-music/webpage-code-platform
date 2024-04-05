@@ -7,21 +7,21 @@ const pageData = {
   "name": "Page-0",
   "isSelect": false,
   "rect": {
-    "x": 0,
-    "y": 0,
+    "x": 146,
+    "y": 71,
     "w": 800,
     "h": 500
   },
   "subs": [
     {
       "type": "CtrlCus_0",
-      "name": "CtrlCus_0-0",
-      "isSelect": true,
+      "name": "CtrlCus_0-3",
+      "isSelect": false,
       "rect": {
-        "x": 254,
-        "y": 201,
-        "w": 100,
-        "h": 30
+        "x": 176,
+        "y": 236,
+        "w": 306,
+        "h": 114
       }
     }
   ]

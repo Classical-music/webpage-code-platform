@@ -2,6 +2,7 @@ import MenuItem from "@WidgetMenu/MenuItem.vue";
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 import { usePageDataStore } from "@store/PageMgrStore";
+import { baseCtrls } from "@Utils/CtrlMgr";
 
 const pageData = usePageDataStore()
 
@@ -10,11 +11,7 @@ export const useCtrlBaseStore = defineStore('ctrl-base', _ => {
     })
 
     function init() {
-        let names = [
-            'Panel', 'Label', 'Image', 'Button',
-            'InputText', 'InputPasswd', 'InputFile', 'Check', 'Radio',
-            'Dropdown', 'PopupBase', 'ListBase', 'TreeBase', 'TableBase',
-        ]
+        let names = baseCtrls
         for (let name of names) {
             data[name] = {
                 comp: MenuItem,

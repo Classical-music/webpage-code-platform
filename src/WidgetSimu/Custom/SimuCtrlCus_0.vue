@@ -1,13 +1,13 @@
 <script setup>
-import { computed, toRaw } from 'vue';
+import { computed, onMounted, reactive, toRaw } from 'vue';
 import { compSimu } from '@Utils/CtrlMgr';
 
 const props = defineProps({
     param: Object
 })
 
-const pageData = {
-  "type": "CtrlCus_0",
+const pageData = reactive({
+  "mainType": "Panel",
   "main": {
     "type": "Panel",
     "name": "Panel-0",
@@ -19,8 +19,15 @@ const pageData = {
       "h": 300
     },
     "subs": []
-  }
-}
+  },
+  "type": "CtrlCus_0"
+})
+
+onMounted(_ => {
+    props.param.addChild = function(item) {
+        pageData.main.subs.push(item)
+    }
+})
 
 const main = computed(_ => {
     return pageData?.main

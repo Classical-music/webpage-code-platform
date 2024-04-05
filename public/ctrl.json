@@ -2,8 +2,20 @@
   "CtrlCus_0": {
     "name": "CtrlCus_0",
     "attr": {
-      "main": "Panel",
-      "name": "CtrlCus_0"
+      "mainType": "Panel",
+      "main": {
+        "type": "Panel",
+        "name": "Panel-0",
+        "isSelect": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 400,
+          "h": 300
+        },
+        "subs": []
+      },
+      "type": "CtrlCus_0"
     }
   }
 }

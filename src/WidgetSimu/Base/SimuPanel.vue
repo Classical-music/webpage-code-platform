@@ -1,13 +1,15 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import SimuCommon from '@WidgetSimu/SimuCommon.vue'
 
 const props = defineProps({
   param: Object
 })
 
-const bodyStyle = computed(_ => {
-  return {
+onMounted(_ => {
+  let subs = props?.param?.subs ?? null
+  if (subs) {
+    props.param.addChild = child => subs.push(child)
   }
 })
 
@@ -19,7 +21,7 @@ const hasChild = computed(_ => {
 </script>
 
 <template>
-  <div :style="bodyStyle" class="panel-body">
+  <div class="panel-body">
     <div class="panel-container" v-if="hasChild">
       <SimuCommon v-for="item in props.param.subs" :param="item"></SimuCommon>
     </div>
