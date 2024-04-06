@@ -179,6 +179,17 @@ CtrlMgr['CtrlCus_0'] = {
     compSimu: _ => import('@WidgetSimu/Custom/SimuCtrlCus_0.vue'),
 }
 
+function createCtrlCus_1() {
+    let item = getCommon('CtrlCus_1')
+    item.rect = { x: 0, y: 0, w: 100, h: 30 }
+    return item
+}
+CtrlMgr['CtrlCus_1'] = {
+    itemCtor: createCtrlCus_1,
+    compCtrl: _ => import('@WidgetCtrl/Custom/CtrlCtrlCus_1.vue'),
+    compSimu: _ => import('@WidgetSimu/Custom/SimuCtrlCus_1.vue'),
+}
+
 
 
 export const allCtrls = Object.keys(CtrlMgr)

@@ -3,22 +3,35 @@
   "name": "Page-0",
   "isSelect": false,
   "rect": {
-    "x": 146,
-    "y": 71,
+    "x": 0,
+    "y": 0,
     "w": 800,
     "h": 500
   },
   "subs": [
     {
       "type": "CtrlCus_0",
-      "name": "CtrlCus_0-3",
+      "name": "CtrlCus_0-2",
       "isSelect": false,
       "rect": {
-        "x": 176,
-        "y": 236,
-        "w": 306,
-        "h": 114
-      }
+        "x": 168,
+        "y": 93,
+        "w": 428,
+        "h": 253
+      },
+      "mainType": "Panel"
+    },
+    {
+      "type": "CtrlCus_1",
+      "name": "CtrlCus_1-0",
+      "isSelect": false,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 30
+      },
+      "mainType": "Panel"
     }
   ]
 }

@@ -11,10 +11,10 @@ const props = defineProps({
 
 // 自定义控件内部参数
 const pageData = reactive({
-  "mainType": "Panel",
+  "mainType": "Label",
   "main": {
-    "type": "Panel",
-    "name": "Panel-0",
+    "type": "Label",
+    "name": "Panel-3",
     "isSelect": false,
     "rect": {
       "x": 0,
@@ -22,34 +22,9 @@ const pageData = reactive({
       "w": 400,
       "h": 300
     },
-    "subs": [
-      {
-        "type": "Label",
-        "name": "Label-1",
-        "isSelect": false,
-        "rect": {
-          "x": 55,
-          "y": 65,
-          "w": 100,
-          "h": 30
-        },
-        "text": "label"
-      },
-      {
-        "type": "CtrlCus_1",
-        "name": "CtrlCus_1-3",
-        "isSelect": false,
-        "rect": {
-          "x": 198,
-          "y": 107,
-          "w": 182,
-          "h": 97
-        },
-        "mainType": "Label"
-      }
-    ]
+    "subs": []
   },
-  "type": "CtrlCus_0"
+  "type": "CtrlCus_1"
 })
 
 onMounted(_ => {

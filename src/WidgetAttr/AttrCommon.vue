@@ -1,85 +1,97 @@
 <script setup>
 import { computed } from 'vue'
 import { usePageDataStore } from "@store/PageMgrStore";
-import { allCtrls } from '@Utils/CtrlMgr';
+import { allCtrls, baseCtrls } from '@Utils/CtrlMgr';
+import { useCtrlCustomStore } from '@store/CtrlCustomStore';
 
 const pageData = usePageDataStore()
 
 const selItem = computed(_ => {
-    return pageData.selItem
+  return pageData.selItem
 })
 
-const AttrList = {
-    type: {
-        name: '控件类型',
-    }
+// 保存自定义控件配置
+function onSaveCusCtrl(ev) {
+  let cb = selItem.value?.getAttr ?? null
+  if (typeof cb === 'function') {
+    let attr = cb()
+    useCtrlCustomStore().saveCtrl(attr)
+  }
 }
 
 </script>
 
 <template>
-    <div v-if="selItem">
-        <div v-for="attr in AttrList" class="attr-row">
-            <label class="attr-left-label">{{ attr.name }}: </label>
-        </div>
+  <div v-if="selItem">
+    <div class="attr-row">
+      <label class="attr-left-label">控件类型:</label>
+      <select v-model="selItem.type" class="attr-right-val">
+        <option v-for="item in allCtrls" :value="item">{{ item }}</option>
+      </select>
     </div>
-    <div v-if="selItem">
-        <div class="attr-row">
-            <label class="attr-left-label">控件类型:</label>
-            <select v-model="selItem.type" class="attr-right-val">
-                <option v-for="item in allCtrls" :value="item">{{ item }}</option>
-            </select>
-        </div>
 
-        <div class="attr-row">
-            <label class="attr-left-label">控件名称</label>
-            <input v-model="selItem.name">
-        </div>
-
-        <div class="attr-row">
-            <label class="attr-left-label">控件坐标:</label>
-            <div class="attr-right-val">
-                <input v-model="selItem.rect.x" style="width: 40px;" />px,
-                <input v-model="selItem.rect.y" style="width: 40px;" />px
-            </div>
-        </div>
-
-        <div class="attr-row">
-            <label class="attr-left-label">控件宽高:</label>
-            <div class="attr-right-val">
-                <input v-model="selItem.rect.w" style="width: 40px;" />px,
-                <input v-model="selItem.rect.h" style="width: 40px;" />px
-            </div>
-        </div>
-
-        <div v-if="selItem.text !== undefined"  class="attr-row">
-            <label class="attr-left-label">控件文本:</label>
-            <input v-model="selItem.text" class="attr-right-val" />
-        </div>
-
-        <div v-if="selItem.src !== undefined" class="attr-row">
-            <label class="attr-left-label">图片资源:</label>
-            <div class="attr-right-val">
-                <input v-model="selItem.src" class="attr-right-val"/>
-            </div>
-        </div>
+    <div v-if="selItem.mainType" class="attr-row">
+      <label class="attr-left-label">主体控件:</label>
+      <select v-model="selItem.mainType" class="attr-right-val">
+        <option v-for="item in baseCtrls" :value="item">{{ item }}</option>
+      </select>
     </div>
+
+    <div class="attr-row">
+      <label class="attr-left-label">控件名称</label>
+      <input v-model="selItem.name">
+    </div>
+
+    <div class="attr-row">
+      <label class="attr-left-label">控件坐标:</label>
+      <div class="attr-right-val">
+        <input v-model="selItem.rect.x" style="width: 40px;" />px,
+        <input v-model="selItem.rect.y" style="width: 40px;" />px
+      </div>
+    </div>
+
+    <div class="attr-row">
+      <label class="attr-left-label">控件宽高:</label>
+      <div class="attr-right-val">
+        <input v-model="selItem.rect.w" style="width: 40px;" />px,
+        <input v-model="selItem.rect.h" style="width: 40px;" />px
+      </div>
+    </div>
+
+    <div v-if="selItem.text !== undefined" class="attr-row">
+      <label class="attr-left-label">控件文本:</label>
+      <input v-model="selItem.text" class="attr-right-val" />
+    </div>
+
+    <div v-if="selItem.src !== undefined" class="attr-row">
+      <label class="attr-left-label">图片资源:</label>
+      <div class="attr-right-val">
+        <input v-model="selItem.src" class="attr-right-val" />
+      </div>
+    </div>
+
+    <div>
+      <button @click="onSaveCusCtrl">保存控件</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 .attr-row {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
+
 .attr-left-label {
-    width: 100px;
-    line-height: 30px;
-    text-align: right;
-    margin-right: 40px;
+  width: 100px;
+  line-height: 30px;
+  text-align: right;
+  margin-right: 40px;
 }
+
 .attr-right-val {
-    width: 150px;
-    height: 30px;
-    box-sizing: border-box;
+  width: 150px;
+  height: 30px;
+  box-sizing: border-box;
 }
-</style>@store/PageDataStore.js
+</style>
