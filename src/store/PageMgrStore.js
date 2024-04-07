@@ -4,6 +4,7 @@ import { FileMgr } from "@Utils/FileMgr";
 import MenuButton from "@WidgetMenu/MenuButton.vue";
 import MenuItem from "@WidgetMenu/MenuItem.vue";
 import { ctrlItemCtor } from "@Utils/CtrlMgr";
+import { CodeBuilder } from "@template/CodeBuilder";
 
 export const usePageMenuStore = defineStore("page-menu", (_) => {
   const selItem = ref(null);
@@ -142,8 +143,6 @@ export const usePageDataStore = defineStore('page-data', _ => {
 })
 
 const pageCfgDir = '/public/page/'
-const pageCompDir = '/src/WidgetPage/'
-const pageCompTemp = '/src/template/CtrlPage.template.vue'
 
 export const PageMgr = {
     pageInit,
@@ -190,8 +189,8 @@ function savePage(pdata = null) {
   // 从PageData中读取配置数据
   if (!pdata) pdata = pageData.page
 
-  // 保存Page代码
-  savePageComp(pdata)
+  // 生成Page组件代码
+  CodeBuilder.buildCtrlPage(pdata)
 
   // 保存Page配置文件
   return savePageCfg(pdata)
@@ -210,8 +209,7 @@ function delPage(pageName) {
   pageMenu.delPage(pageName)
 
   // 删除Page组件文件
-  let pageComp = pageCompDir + pageName + '.vue'
-  FileMgr.delFile(pageComp)
+  CodeBuilder.delCtrlPage(pageName)
     
   // 删除Page配置文件
   let pageCfg = pageCfgDir + pageName + '.json'
@@ -229,17 +227,7 @@ function savePageCfg(cfgData) {
   let str = JSON.stringify(cfgData, null, '  ')
   return FileMgr.saveFile(pathName, str)
 }
-function savePageComp(cfgData) {
-  let str = JSON.stringify(cfgData, null, '  ')
-  // 读取Page组件模板
-  FileMgr.readFile(pageCompTemp).then(template => {
-    // 模板变量替换
-    let pdata = template.replace('[/*{placeholder}*/]', str)
-    let pathName = pageCompDir + cfgData.name + '.vue'
-    // 生成/保存Page组件
-    FileMgr.saveFile(pathName, pdata)
-  })
-}
+
 let pageId = 0;
 function newPageName() {
   let pNames = pageMenu.pageList()

@@ -1,14 +1,13 @@
 import { FileMgr } from "@Utils/FileMgr";
 import MenuButton from "@WidgetMenu/MenuButton.vue";
 import MenuItemRouter from "@WidgetMenu/MenuItemRouter.vue";
+import { CodeBuilder } from "@template/CodeBuilder";
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
 const urlPrefix = '/url'
 let urlId = 0
 const urlCfgPath = '/public/router.json'
-const codeTempPath = '/src/template/router.template.js'
-const codePath = '/src/router/index.js'
 export const useRouterMgrStore = defineStore('router-mgr', _ => {
     const data = reactive({
         addBtn: {
@@ -51,29 +50,7 @@ export const useRouterMgrStore = defineStore('router-mgr', _ => {
         }
         FileMgr.saveFile(urlCfgPath, JSON.stringify(routers, null, '  '))
 
-        genRouter()
-    }
-
-    function genRouter() {
-        let str = ''
-        for (let key in data) {
-            if (key === 'addBtn') continue
-            let item = data[key]
-            if (!item.page) continue
-            let name = item.page.split('.')[0]
-            str += '\n  {'
-                + `\n    path: '${item.url}',`
-                + `\n    name: '${name}',`
-                + `\n    component: () => import('@WidgetPage/${name}.vue')`
-                + `\n  },`
-        }
-        str += '\n'
-
-        FileMgr.readFile(codeTempPath)
-        .then(template => {
-            let rdata = template.replace("[/*{placeholder}*/]", str)
-            FileMgr.saveFile(codePath, rdata)
-        })
+        CodeBuilder.buildRouter(data)
     }
 
     function addRouter() {

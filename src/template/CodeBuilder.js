@@ -1,11 +1,55 @@
 import { FileMgr } from "@Utils/FileMgr"
 
 export const CodeBuilder = {
+    buildCtrlPage,
+    delCtrlPage,
+    buildRouter,
     buildCtrlSimu,
     delCtrlSimu,
     buildCtrlCus,
     delCtrlCus,
     buildCtrlMgr,
+}
+
+// 页面组件
+const ctrlPageTmplate = '/src/template/CtrlPage.template.vue'
+const ctrlPageObjDir = '/src/WidgetPage/'
+function buildCtrlPage(cfgData) {
+    FileMgr.readFile(ctrlPageTmplate)
+    .then(tempData => {
+        let str = JSON.stringify(cfgData, null, '  ')
+        let rdata = tempData.replace('[/*{placeholder}*/]', str)
+        let fname = ctrlPageObjDir + cfgData.name + '.vue'
+        FileMgr.saveFile(fname, rdata)
+    })
+}
+function delCtrlPage(pageName) {
+    FileMgr.delFile(ctrlPageObjDir + pageName + '.json')
+}
+
+// Page 路由
+const routerTemplate = '/src/template/router.template.js'
+const routerObjFile = '/src/router/index.js'
+function buildRouter(datas) {
+    let str = ''
+    for (let key in datas) {
+        if (key === 'addBtn') continue
+        let item = datas[key]
+        if (!item.page) continue
+        let name = item.page.split('.')[0]
+        str += '\n  {'
+             + `\n    path: '${item.url}',`
+             + `\n    name: '${name}',`
+             + `\n    component: () => import('@WidgetPage/${name}.vue')`
+             + `\n  },`
+    }
+    str += '\n'
+
+    FileMgr.readFile(routerTemplate)
+    .then(tempData => {
+        let rdata = tempData.replace('[/*{placeholder}*/]', str)
+        FileMgr.saveFile(routerObjFile, rdata)
+    })
 }
 
 // 自定义控件: 模拟控件组件
