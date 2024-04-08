@@ -4,7 +4,7 @@ export const CtrlMgr = {
     Page: {
         itemCtor: createPage,
         compCtrl: _ => import('@WidgetCtrl/CtrlPage.vue'),
-        compSimu: _ => import('@WidgetSimu/SimuPage.vue')
+        compSimu: _ => import('@WidgetSimu/Base/SimuPage.vue')
     },
     Panel: {
         itemCtor: createPanel,

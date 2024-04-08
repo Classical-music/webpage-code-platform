@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, reactive, toRaw } from 'vue';
 import { compSimu } from '@Utils/CtrlMgr';
+import { useCtrlCustomStore } from '@store/CtrlCustomStore';
 
 /**
  * 自定义控件可配置参数: 由 @Utils/CtrlMgrjs: create 函数生成
@@ -21,6 +22,7 @@ onMounted(_ => {
      */
     props.param.addChild = function(item) {
         pageData.main.subs.push(item)
+        saveCusCtrl()
     }
 
     /**
@@ -32,14 +34,17 @@ onMounted(_ => {
         set: (val) => {
             pageData.mainType = val
             pageData.main.type = val
+            saveCusCtrl()
         }
     })
 
     /**
-     * getAttr:
-     *   向外部提供借口, 供外部获取 pageData 用于保存自定义控件的配置信息
+     * saveCusCtrl:
+     *   内部调用, 更新自定义控件属性时, 刷新该自定义控件
      */
-    props.param.getAttr = _ => pageData
+    const saveCusCtrl = _ => {
+        useCtrlCustomStore().saveCtrl(pageData)
+    }
 })
 
 const main = computed(_ => {

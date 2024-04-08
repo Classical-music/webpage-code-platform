@@ -2,22 +2,12 @@
 import { computed } from 'vue'
 import { usePageDataStore } from "@store/PageMgrStore";
 import { allCtrls, baseCtrls } from '@Utils/CtrlMgr';
-import { useCtrlCustomStore } from '@store/CtrlCustomStore';
 
 const pageData = usePageDataStore()
 
 const selItem = computed(_ => {
   return pageData.selItem
 })
-
-// 保存自定义控件配置
-function onSaveCusCtrl(ev) {
-  let cb = selItem.value?.getAttr ?? null
-  if (typeof cb === 'function') {
-    let attr = cb()
-    useCtrlCustomStore().saveCtrl(attr)
-  }
-}
 
 </script>
 
@@ -68,10 +58,6 @@ function onSaveCusCtrl(ev) {
       <div class="attr-right-val">
         <input v-model="selItem.src" class="attr-right-val" />
       </div>
-    </div>
-
-    <div>
-      <button @click="onSaveCusCtrl">保存控件</button>
     </div>
   </div>
 </template>

@@ -11,25 +11,25 @@
   "subs": [
     {
       "type": "CtrlCus_0",
-      "name": "CtrlCus_0-2",
+      "name": "CtrlCus_0-0",
       "isSelect": false,
       "rect": {
-        "x": 168,
-        "y": 93,
-        "w": 428,
-        "h": 253
+        "x": 227,
+        "y": 237,
+        "w": 445,
+        "h": 164
       },
       "mainType": "Panel"
     },
     {
-      "type": "CtrlCus_1",
-      "name": "CtrlCus_1-0",
+      "type": "CtrlCus_0",
+      "name": "CtrlCus_0-0",
       "isSelect": false,
       "rect": {
-        "x": 0,
-        "y": 0,
-        "w": 100,
-        "h": 30
+        "x": 90,
+        "y": 36,
+        "w": 501,
+        "h": 159
       },
       "mainType": "Panel"
     }

@@ -24,7 +24,7 @@ function buildCtrlPage(cfgData) {
     })
 }
 function delCtrlPage(pageName) {
-    FileMgr.delFile(ctrlPageObjDir + pageName + '.json')
+    FileMgr.delFile(ctrlPageObjDir + pageName + '.vue')
 }
 
 // Page 路由

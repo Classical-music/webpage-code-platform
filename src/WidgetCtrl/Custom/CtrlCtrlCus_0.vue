@@ -21,27 +21,27 @@ const pageData = {
     "subs": [
       {
         "type": "Label",
-        "name": "Label-1",
+        "name": "Label-0",
         "isSelect": false,
         "rect": {
-          "x": 55,
-          "y": 65,
+          "x": 260,
+          "y": 69,
           "w": 100,
           "h": 30
         },
         "text": "label"
       },
       {
-        "type": "CtrlCus_1",
-        "name": "CtrlCus_1-3",
+        "type": "Image",
+        "name": "Image-1",
         "isSelect": false,
         "rect": {
-          "x": 198,
-          "y": 107,
-          "w": 182,
-          "h": 97
+          "x": 0,
+          "y": 0,
+          "w": 50,
+          "h": 50
         },
-        "mainType": "Label"
+        "src": ""
       }
     ]
   },

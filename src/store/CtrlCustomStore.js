@@ -80,8 +80,6 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         
         // 生成自定义控件的 creator 函数代码
         CodeBuilder.buildCtrlMgr(data)
-
-        alert('保存成功')
     }
 
     function delCtrl(name) {
@@ -111,7 +109,9 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
                 attr: item.attr,
             }
         }
-        FileMgr.saveFile(ctrlCfgPath, JSON.stringify(ctrls, null, '  '))
+        FileMgr.saveFile(ctrlCfgPath, JSON.stringify(ctrls, (k, v) => {
+            return k === 'isSelect' ? false : v
+        }, '  '))
     }
 
     function addCtrlItem(item) {

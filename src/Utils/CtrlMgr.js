@@ -4,7 +4,7 @@ export const CtrlMgr = {
     Page: {
         itemCtor: createPage,
         compCtrl: _ => import('@WidgetCtrl/CtrlPage.vue'),
-        compSimu: _ => import('@WidgetSimu/SimuPage.vue')
+        compSimu: _ => import('@WidgetSimu/Base/SimuPage.vue')
     },
     Panel: {
         itemCtor: createPanel,
@@ -177,17 +177,6 @@ CtrlMgr['CtrlCus_0'] = {
     itemCtor: createCtrlCus_0,
     compCtrl: _ => import('@WidgetCtrl/Custom/CtrlCtrlCus_0.vue'),
     compSimu: _ => import('@WidgetSimu/Custom/SimuCtrlCus_0.vue'),
-}
-
-function createCtrlCus_1() {
-    let item = getCommon('CtrlCus_1')
-    item.rect = { x: 0, y: 0, w: 100, h: 30 }
-    return item
-}
-CtrlMgr['CtrlCus_1'] = {
-    itemCtor: createCtrlCus_1,
-    compCtrl: _ => import('@WidgetCtrl/Custom/CtrlCtrlCus_1.vue'),
-    compSimu: _ => import('@WidgetSimu/Custom/SimuCtrlCus_1.vue'),
 }
 
 

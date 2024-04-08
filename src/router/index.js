@@ -13,6 +13,11 @@ let routes = [
 ]
 
 routes.push(
+  {
+    path: '/url-0',
+    name: 'Page-0',
+    component: () => import('@WidgetPage/Page-0.vue')
+  },
 )
 
 const router = createRouter({

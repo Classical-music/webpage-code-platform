@@ -205,6 +205,7 @@ function delPage(pageName) {
   if (pageMenu.isSel(pageName)) {
     pageData.closePage()
   }
+
   // PageMenu删除文件
   pageMenu.delPage(pageName)
 
@@ -224,7 +225,9 @@ function loadPageCfg(pageName) {
 }
 function savePageCfg(cfgData) {
   let pathName = pageCfgDir + cfgData.name + '.json'
-  let str = JSON.stringify(cfgData, null, '  ')
+  let str = JSON.stringify(cfgData, (k, v) => {
+    return k === 'isSelect' ? false : v
+  }, '  ')
   return FileMgr.saveFile(pathName, str)
 }
 
