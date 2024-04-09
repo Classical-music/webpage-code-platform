@@ -1,46 +1,11 @@
 {
   "CtrlCus_0": {
-    "name": "CtrlCus_0",
-    "attr": {
-      "mainType": "Panel",
-      "main": {
-        "type": "Panel",
-        "name": "Panel-0",
-        "isSelect": false,
-        "rect": {
-          "x": 0,
-          "y": 0,
-          "w": 400,
-          "h": 300
-        },
-        "subs": [
-          {
-            "type": "Label",
-            "name": "Label-0",
-            "isSelect": false,
-            "rect": {
-              "x": 260,
-              "y": 69,
-              "w": 100,
-              "h": 30
-            },
-            "text": "label"
-          },
-          {
-            "type": "Image",
-            "name": "Image-1",
-            "isSelect": false,
-            "rect": {
-              "x": 0,
-              "y": 0,
-              "w": 50,
-              "h": 50
-            },
-            "src": ""
-          }
-        ]
-      },
-      "type": "CtrlCus_0"
-    }
+    "name": "CtrlCus_0"
+  },
+  "CtrlCus_1": {
+    "name": "CtrlCus_1"
+  },
+  "CtrlCus_2": {
+    "name": "CtrlCus_2"
   }
 }

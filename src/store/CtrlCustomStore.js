@@ -6,6 +6,7 @@ import { FileMgr } from "@Utils/FileMgr";
 import { usePageDataStore } from "./PageMgrStore";
 import { ctrlItemCtor } from "@Utils/CtrlMgr";
 import { CodeBuilder } from "@template/CodeBuilder";
+import { ConfigMgr } from "@config";
 
 const pageData = usePageDataStore()
 
@@ -17,26 +18,31 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         addBtn: {
             comp: MenuButton,
             name: '新建',
-            clickCb: addNewCtrl,
+            // clickCb: addNewCtrl,
+            clickCb: addNew,
         },
     })
 
     function init() {
-        FileMgr.readFile(ctrlCfgPath)
+        ConfigMgr.loadCusCtrlList()
         .then(clist => {
-            clist = JSON.parse(clist)
-            for (let key in clist) {
-                let item = clist[key]
-                data[key] = {
+            reset()
+            clist.forEach(file => {
+                let cname = file.split('.')[0]
+                data[cname] = {
                     comp: MenuItem,
-                    name: key,
-                    attr: item.attr,
-                    isSel: false,
+                    name: cname,
                     clickCb: addCtrlItem,
                     delCb: param => delCtrl(param?.name)
                 }
-            }
+            })
         })
+    }
+
+    function reset() {
+        for (let key in data) {
+            if (key !== 'addBtn') delete data[key]
+        }
     }
 
     function addNewCtrl() {
@@ -64,6 +70,22 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         // 生成自定义控件的 creator 函数代码
         CodeBuilder.buildCtrlMgr(data)
     }
+    function addNew() {
+        // 生成名称, 生成默认数据
+        let ctrlName = newCtrlName()
+        let ctrlCfg = createCtrlCfg()
+        ctrlCfg.type = ctrlName
+
+        // 生成模拟控件
+
+        // 生成控件
+
+        // 生成 ctorMgr
+
+        // 保存配置
+        return ConfigMgr.saveCusCtrl(ctrlCfg)
+        .then(_ => init())
+    }
 
     function saveCtrl(attr) {
         let ctrlName = attr.type
@@ -86,17 +108,17 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         // data中删除name
         delete data[name]
 
-        // 保存配置
-        saveCtrlCfg()
+        // 删除配置
+        // saveCtrlCfg()
 
-        // 重新生成 creator 函数代码
-        CodeBuilder.buildCtrlMgr(data)
+        // // 重新生成 creator 函数代码
+        // CodeBuilder.buildCtrlMgr(data)
 
-        // 删除自定义控件模拟组件代码
-        CodeBuilder.delCtrlSimu(name)
+        // // 删除自定义控件模拟组件代码
+        // CodeBuilder.delCtrlSimu(name)
 
-        // 删除自定义控件组件代码
-        CodeBuilder.delCtrlCus(name)
+        // // 删除自定义控件组件代码
+        // CodeBuilder.delCtrlCus(name)
     }
 
     function saveCtrlCfg() {

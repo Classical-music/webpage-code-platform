@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
-import { FileMgr } from "@Utils/FileMgr";
 import MenuButton from "@WidgetMenu/MenuButton.vue";
 import MenuItem from "@WidgetMenu/MenuItem.vue";
 import { ctrlItemCtor } from "@Utils/CtrlMgr";
 import { CodeBuilder } from "@template/CodeBuilder";
+import { ConfigMgr } from "@config";
 
+// Page 菜单
 export const usePageMenuStore = defineStore("page-menu", (_) => {
   const selItem = ref(null);
   const data = reactive({
@@ -18,16 +19,16 @@ export const usePageMenuStore = defineStore("page-menu", (_) => {
 
   function init(plist) {
     reset();
-    plist.forEach(file => {
-        let pname = file.split('.')[0]
-        data[pname] = {
-            comp: MenuItem,
-            name: pname,
-            isSel: false,
-            clickCb: param => PageMgr.selPage(param?.name),
-            delCb: param => PageMgr.delPage(param?.name),
-        }
-    })
+    plist.forEach((file) => {
+      let pname = file.split(".")[0];
+      data[pname] = {
+        comp: MenuItem,
+        name: pname,
+        isSel: false,
+        clickCb: (param) => PageMgr.selPage(param?.name),
+        delCb: (param) => PageMgr.delPage(param?.name),
+      };
+    });
   }
 
   function reset() {
@@ -37,12 +38,12 @@ export const usePageMenuStore = defineStore("page-menu", (_) => {
   }
 
   function isSel(pageName = null) {
-    if (!pageName) return false
-    return selItem.value?.name === pageName ? true : false
+    if (!pageName) return false;
+    return selItem.value?.name === pageName ? true : false;
   }
 
   function selPage(pageName) {
-    let item = data[pageName] ?? null
+    let item = data[pageName] ?? null;
     if (item === selItem.value) return;
     if (selItem.value) {
       selItem.value.isSel = false;
@@ -61,7 +62,7 @@ export const usePageMenuStore = defineStore("page-menu", (_) => {
   function pageList() {
     let plist = [];
     for (let key in data) {
-      if (key === "addBtn") continue
+      if (key === "addBtn") continue;
       plist.push(key);
     }
     return plist;
@@ -71,169 +72,152 @@ export const usePageMenuStore = defineStore("page-menu", (_) => {
     data,
     init,
     pageList,
-    isSel, selPage, delPage,
+    isSel,
+    selPage,
+    delPage,
   };
 });
 
-export const usePageDataStore = defineStore('page-data', _ => {
+// 当前 Page 数据
+export const usePageDataStore = defineStore("page-data", (_) => {
   let value = reactive({
-      page: null,
-      selItem: null
-  })
+    page: null,
+    selItem: null,
+  });
 
-  const page = computed(_ => {
-      return value.page
-  })
+  const page = computed((_) => {
+    return value.page;
+  });
 
-  const selItem = computed(_ => {
-      return value.selItem
-  })
+  const selItem = computed((_) => {
+    return value.selItem;
+  });
 
   function setSelItem(item = null) {
-      if (value.selItem) {
-          value.selItem.isSelect = false
-      }
+    if (value.selItem) {
+      value.selItem.isSelect = false;
+    }
 
-      value.selItem = item
-      if (value.selItem) {
-          value.selItem.isSelect = true
-      }
+    value.selItem = item;
+    if (value.selItem) {
+      value.selItem.isSelect = true;
+    }
   }
 
   function resetPage(page = null) {
-      if (page)
-          value.page = page
-      else
-          value.page = ctrlItemCtor('Page')
-      setSelItem(value.page)
+    if (page) value.page = page;
+    else value.page = ctrlItemCtor("Page");
+    setSelItem(value.page);
   }
 
   function closePage() {
-      value.page = null
-      setSelItem(value.page)
+    value.page = null;
+    setSelItem(value.page);
   }
 
   function hasChild(item) {
-    return item && item.addChild
+    return item && item.addChild;
   }
 
   function addItem(type) {
-      let parent = value.selItem
-      console.log(parent)
-      if (!hasChild(parent)) parent = value.page
-      if (!hasChild(parent)) {
-          console.warn(`无法添加控件`)
-          return
-      }
+    let parent = value.selItem;
+    console.log(parent);
+    if (!hasChild(parent)) parent = value.page;
+    if (!hasChild(parent)) {
+      console.warn(`无法添加控件`);
+      return;
+    }
 
-      let item = ctrlItemCtor(type)
-      if (item) {
-        parent.addChild(item)
-      }
+    let item = ctrlItemCtor(type);
+    if (item) {
+      parent.addChild(item);
+    }
   }
 
   return {
-      page,
-      selItem,
-      setSelItem,
-      resetPage,
-      closePage,
-      addItem
-  }
-})
-
-const pageCfgDir = '/public/page/'
-
-export const PageMgr = {
-    pageInit,
-    selPage,
-    addNewPage,
-    savePage,
+    page,
+    selItem,
+    setSelItem,
+    resetPage,
     closePage,
-    delPage,
-}
+    addItem,
+  };
+});
 
-const pageMenu = usePageMenuStore()
+// Page 管理
+export const PageMgr = {
+  pageInit,
+  selPage,
+  addNewPage,
+  savePage,
+  closePage,
+  delPage,
+};
+
+const pageMenu = usePageMenuStore();
 const pageData = usePageDataStore();
 
 function pageInit(selName) {
-    // 读文件，获取当前Page列表
-    FileMgr.readDir(pageCfgDir)
-    .then(plist => {
-        // 更新PageMenu
-        pageMenu.init(plist)
-        if (plist.length <= 0) return
-        // 设置默认选中项
-        if (!selName) selName = plist[0].split('.')[0]
-        PageMgr.selPage(selName)
-    })
+  // 读文件，获取当前Page列表
+  ConfigMgr.loadPageList().then((plist) => {
+    // 更新PageMenu
+    pageMenu.init(plist);
+    if (plist.length <= 0) return;
+    // 设置默认选中项
+    if (!selName) selName = plist[0].split(".")[0];
+    PageMgr.selPage(selName);
+  });
 }
 function selPage(pageName) {
-    // 设置PageMenu的选中项
-    pageMenu.selPage(pageName)
-    // 读取当前Page页代码, 更新到PageData
-    loadPageCfg(pageName)
+  // 设置PageMenu的选中项
+  pageMenu.selPage(pageName);
+  // 读取当前Page页代码, 更新到PageData
+  ConfigMgr.loadPage(pageName).then((pdata) => pageData.resetPage(pdata));
 }
 function addNewPage() {
   // 生成文件名
-  let pageName = newPageName()
+  let pageName = newPageName();
   // 生成基础数据
-  let pdata = ctrlItemCtor('Page')
-  pdata.name = pageName
+  let pdata = ctrlItemCtor("Page");
+  pdata.name = pageName;
 
   // 保存Page
-  PageMgr.savePage(pdata)
-  .then(_ => pageInit(pageName))
+  PageMgr.savePage(pdata).then((_) => pageInit(pageName));
 }
 function savePage(pdata = null) {
-  // 从PageData中读取配置数据
-  if (!pdata) pdata = pageData.page
+  // 从 PageData 中读取配置数据
+  if (!pdata) pdata = pageData.page;
 
   // 生成Page组件代码
-  CodeBuilder.buildCtrlPage(pdata)
+  CodeBuilder.buildCtrlPage(pdata);
 
   // 保存Page配置文件
-  return savePageCfg(pdata)
+  return ConfigMgr.savePage(pdata);
 }
 function closePage() {
-    // 关闭PageData
-    pageData.closePage()
-    // 设置PageMenu当前选中项为空
-    pageMenu.selPage()
+  // 关闭PageData
+  pageData.closePage();
+  // 设置PageMenu当前选中项为空
+  pageMenu.selPage();
 }
 function delPage(pageName) {
   if (pageMenu.isSel(pageName)) {
-    pageData.closePage()
+    pageData.closePage();
   }
 
   // PageMenu删除文件
-  pageMenu.delPage(pageName)
+  pageMenu.delPage(pageName);
 
   // 删除Page组件文件
-  CodeBuilder.delCtrlPage(pageName)
-    
-  // 删除Page配置文件
-  let pageCfg = pageCfgDir + pageName + '.json'
-  FileMgr.delFile(pageCfg)
-}
+  CodeBuilder.delCtrlPage(pageName);
 
-function loadPageCfg(pageName) {
-  let pathName = pageCfgDir + pageName + '.json';
-  FileMgr.readFile(pathName).then((pdata) => {
-    pageData.resetPage(JSON.parse(pdata));
-  });
-}
-function savePageCfg(cfgData) {
-  let pathName = pageCfgDir + cfgData.name + '.json'
-  let str = JSON.stringify(cfgData, (k, v) => {
-    return k === 'isSelect' ? false : v
-  }, '  ')
-  return FileMgr.saveFile(pathName, str)
+  // 删除Page配置文件
+  ConfigMgr.delPage(pageName);
 }
 
 let pageId = 0;
 function newPageName() {
-  let pNames = pageMenu.pageList()
+  let pNames = pageMenu.pageList();
   while (true) {
     let pname = `Page-${pageId++}`;
     if (!pNames.includes(pname)) return pname;

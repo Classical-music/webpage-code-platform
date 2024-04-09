@@ -168,17 +168,5 @@ function getCommon(type) {
     }
 }
 
-function createCtrlCus_0() {
-    let item = getCommon('CtrlCus_0')
-    item.rect = { x: 0, y: 0, w: 100, h: 30 }
-    return item
-}
-CtrlMgr['CtrlCus_0'] = {
-    itemCtor: createCtrlCus_0,
-    compCtrl: _ => import('@WidgetCtrl/Custom/CtrlCtrlCus_0.vue'),
-    compSimu: _ => import('@WidgetSimu/Custom/SimuCtrlCus_0.vue'),
-}
-
-
 
 export const allCtrls = Object.keys(CtrlMgr)

@@ -16,6 +16,7 @@ export default defineConfig({
       '@store': fileURLToPath(new URL('./src/store', import.meta.url)),
       '@Utils': fileURLToPath(new URL('./src/Utils', import.meta.url)),
       '@template': fileURLToPath(new URL('./src/template', import.meta.url)),
+      '@config': fileURLToPath(new URL('./src/config', import.meta.url)),
       '@WidgetMenu': fileURLToPath(new URL('./src/WidgetMenu', import.meta.url)),
       '@WidgetSimu': fileURLToPath(new URL('./src/WidgetSimu', import.meta.url)),
       '@WidgetAttr': fileURLToPath(new URL('./src/WidgetAttr', import.meta.url)),
