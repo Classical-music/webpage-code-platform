@@ -6,6 +6,11 @@ export const CtrlMgr = {
         compCtrl: _ => import('@WidgetCtrl/CtrlPage.vue'),
         compSimu: _ => import('@WidgetSimu/Base/SimuPage.vue')
     },
+    EditPage: {
+        itemCtor: createEditPage,
+        compCtrl: null,
+        compSimu: _ => import('@WidgetSimu/Base/SimuEditPage.vue')
+    },
     Panel: {
         itemCtor: createPanel,
         compCtrl: _ => import('@WidgetCtrl/CtrlPanel.vue'),
@@ -71,6 +76,17 @@ function createPage() {
     let item = getCommon("Page")
     item.rect = { x: 0, y: 0, w: 800, h: 500 }
     item.subs = []
+    return item
+}
+function createEditPage() {
+    let item = getCommon("EditPage")
+    item.name = 'EditPage'
+    item.rect = { x: 20, y: 20, w: 800, h: 500 }
+    item.subs = []
+    item.setCusCtrl = function(ctrlName, child) {
+        item.name = ctrlName
+        item.subs.push(child)
+    }
     return item
 }
 function createPanel() {
@@ -167,6 +183,18 @@ function getCommon(type) {
         isSelect: false
     }
 }
+
+function createCtrlCus_0() {
+    let item = getCommon('CtrlCus_0')
+    item.rect = { x: 0, y: 0, w: 100, h: 30 }
+    return item
+}
+CtrlMgr['CtrlCus_0'] = {
+    itemCtor: createCtrlCus_0,
+    compCtrl: _ => import('@WidgetCtrl/Custom/CtrlCtrlCus_0.vue'),
+    compSimu: _ => import('@WidgetSimu/Custom/SimuCtrlCus_0.vue'),
+}
+
 
 
 export const allCtrls = Object.keys(CtrlMgr)

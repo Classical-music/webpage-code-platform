@@ -8,6 +8,7 @@ let pageData = usePageDataStore()
 <template>
   <div class="simu-body" @click="pageData.setSelItem()">
     <SimuCommon :param="pageData.page"></SimuCommon>
+    <SimuCommon :param="pageData.editPage"></SimuCommon>
   </div>
 </template>
 

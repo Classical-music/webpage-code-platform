@@ -83,15 +83,14 @@ export const usePageDataStore = defineStore("page-data", (_) => {
   let value = reactive({
     page: null,
     selItem: null,
+    editPage: null,
   });
 
-  const page = computed((_) => {
-    return value.page;
-  });
+  const page = computed(_ => value.page)
 
-  const selItem = computed((_) => {
-    return value.selItem;
-  });
+  const editPage = computed(_ => value.editPage)
+
+  const selItem = computed(_ => value.selItem)
 
   function setSelItem(item = null) {
     if (value.selItem) {
@@ -115,6 +114,17 @@ export const usePageDataStore = defineStore("page-data", (_) => {
     setSelItem(value.page);
   }
 
+  function editCusCtrl(ctrlData) {
+    let editPage = ctrlItemCtor("EditPage")
+    editPage.setCusCtrl(ctrlData.type, ctrlData.main)
+    setSelItem(ctrlData.main)
+    value.editPage = editPage
+  }
+
+  function closeEditPage() {
+    value.editPage = null
+  }
+
   function hasChild(item) {
     return item && item.addChild;
   }
@@ -136,10 +146,13 @@ export const usePageDataStore = defineStore("page-data", (_) => {
 
   return {
     page,
+    editPage,
+    closeEditPage,
     selItem,
     setSelItem,
     resetPage,
     closePage,
+    editCusCtrl,
     addItem,
   };
 });
@@ -152,6 +165,7 @@ export const PageMgr = {
   savePage,
   closePage,
   delPage,
+  closeEditPage,
 };
 
 const pageMenu = usePageMenuStore();
@@ -213,6 +227,10 @@ function delPage(pageName) {
 
   // 删除Page配置文件
   ConfigMgr.delPage(pageName);
+}
+
+function closeEditPage() {
+  pageData.closeEditPage()
 }
 
 let pageId = 0;

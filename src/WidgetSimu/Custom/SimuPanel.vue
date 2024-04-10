@@ -12,7 +12,18 @@ const props = defineProps({
 })
 
 // 自定义控件内部参数
-const pageData = reactive([/*{placeholder}*/])
+const pageData = reactive({
+  "type": "Panel",
+  "name": "Panel-0",
+  "isSelect": false,
+  "rect": {
+    "x": 0,
+    "y": 0,
+    "w": 400,
+    "h": 300
+  },
+  "subs": []
+})
 
 onMounted(_ => {
     /**

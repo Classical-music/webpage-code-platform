@@ -9,6 +9,7 @@ export const ConfigMgr = {
     saveCusCtrl,
     loadCusCtrlList,
     loadCusCtrl,
+    delCusCtrl,
 
     saveRouter,
     loadRouter
@@ -40,18 +41,22 @@ function delPage(pageName) {
 }
 
 // 保存自定义控件
-const cusCtrlObjDir = '/src/config/ctrl/'
-function saveCusCtrl(cfgData) {
-    let fname = cusCtrlObjDir + cfgData.type + '.json'
-    return FileMgr.saveFile(fname, JSON.stringify(cfgData, null, '  '))
+const cusCtrlCfgFile = '/src/config/ctrlCus.json'
+function saveCusCtrl(cfgDatas) {
+    return FileMgr.saveFile(cusCtrlCfgFile, JSON.stringify(cfgDatas, null, '  '))
 }
 // 获取自定义控件列表
 function loadCusCtrlList() {
     return FileMgr.readDir(cusCtrlObjDir)
 }
 // 加载自定义控件
-function loadCusCtrl(ctrlName) {
-
+function loadCusCtrl() {
+    return FileMgr.readFile(cusCtrlCfgFile)
+        .then(str => JSON.parse(str))
+}
+function delCusCtrl(ctrlName) {
+    let fname = cusCtrlObjDir + ctrlName + '.json'
+    FileMgr.delFile(fname)
 }
 
 // 保存路由信息

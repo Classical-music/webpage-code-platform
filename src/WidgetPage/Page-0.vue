@@ -5,14 +5,37 @@ import CtrlCommon from '@WidgetCtrl/CtrlCommon.vue';
 const pageData = {
   "type": "Page",
   "name": "Page-0",
-  "isSelect": false,
+  "isSelect": true,
   "rect": {
     "x": 0,
     "y": 0,
     "w": 800,
     "h": 500
   },
-  "subs": []
+  "subs": [
+    {
+      "type": "CtrlCus_0",
+      "name": "CtrlCus_0-0",
+      "isSelect": false,
+      "rect": {
+        "x": 7,
+        "y": 58,
+        "w": 348,
+        "h": 279
+      }
+    },
+    {
+      "type": "CtrlCus_0",
+      "name": "CtrlCus_0-1",
+      "isSelect": false,
+      "rect": {
+        "x": 393,
+        "y": 28,
+        "w": 320,
+        "h": 274
+      }
+    }
+  ]
 }
 
 const subs = computed(_ => {

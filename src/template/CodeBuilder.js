@@ -55,12 +55,12 @@ function buildRouter(datas) {
 // 自定义控件: 模拟控件组件
 const ctrlSimuTmplate = '/src/template/CtrlSimu.template.vue'
 const ctrlSimuObjDir = '/src/WidgetSimu/Custom/Simu'
-function buildCtrlSimu(ctrlName, data) {
+function buildCtrlSimu(cfgData) {
     FileMgr.readFile(ctrlSimuTmplate)
     .then(tempData => {
-        let str = JSON.stringify(data, null, '  ')
+        let str = JSON.stringify(cfgData, null, '  ')
         let rdata = tempData.replace('[/*{placeholder}*/]', str)
-        let fname = ctrlSimuObjDir + ctrlName + '.vue'
+        let fname = ctrlSimuObjDir + cfgData.type + '.vue'
         FileMgr.saveFile(fname, rdata)
     })
 }
@@ -71,12 +71,12 @@ function delCtrlSimu(ctrlName) {
 // 自定义控件: 控件组件
 const ctrlCusTemplate = '/src/template/CtrlCus.template.vue'
 const ctrlCusObjDir = '/src/WidgetCtrl/Custom/Ctrl'
-function buildCtrlCus(ctrlName, data) {
+function buildCtrlCus(ctrlCfg) {
     FileMgr.readFile(ctrlCusTemplate)
     .then(tempData => {
-        let str = JSON.stringify(data, null, '  ')
+        let str = JSON.stringify(ctrlCfg, null, '  ')
         let rdata = tempData.replace('[/*{placeholder}*/]', str)
-        let fname = ctrlCusObjDir + ctrlName + '.vue'
+        let fname = ctrlCusObjDir + ctrlCfg.type + '.vue'
         FileMgr.saveFile(fname, rdata)
     })
 }

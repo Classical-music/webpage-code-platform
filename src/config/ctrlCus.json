@@ -1,0 +1,56 @@
+{
+  "CtrlCus_0": {
+    "mainType": "Panel",
+    "main": {
+      "type": "Panel",
+      "name": "Panel-0",
+      "isSelect": false,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 400,
+        "h": 300
+      },
+      "subs": [
+        {
+          "type": "Label",
+          "name": "Label-3",
+          "isSelect": false,
+          "rect": {
+            "x": 80,
+            "y": 67,
+            "w": 100,
+            "h": 30
+          },
+          "text": "label"
+        },
+        {
+          "type": "Label",
+          "name": "Label-5",
+          "isSelect": false,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 100,
+            "h": 30
+          },
+          "text": "label"
+        },
+        {
+          "type": "Image",
+          "name": "Image-9",
+          "isSelect": true,
+          "rect": {
+            "x": 228,
+            "y": 173,
+            "w": 50,
+            "h": 50
+          },
+          "src": "/public/favicon.ico"
+        }
+      ]
+    },
+    "attr": {},
+    "type": "CtrlCus_0"
+  }
+}

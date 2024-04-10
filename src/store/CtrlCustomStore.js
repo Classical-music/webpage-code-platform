@@ -2,7 +2,6 @@ import MenuButton from "@WidgetMenu/MenuButton.vue";
 import MenuItem from "@WidgetMenu/MenuItem.vue";
 import { defineStore } from "pinia";
 import { reactive } from "vue";
-import { FileMgr } from "@Utils/FileMgr";
 import { usePageDataStore } from "./PageMgrStore";
 import { ctrlItemCtor } from "@Utils/CtrlMgr";
 import { CodeBuilder } from "@template/CodeBuilder";
@@ -11,31 +10,32 @@ import { ConfigMgr } from "@config";
 const pageData = usePageDataStore()
 
 // 配置文件
-const ctrlCfgPath = '/public/ctrl.json'
 
 export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
-    const data = reactive({
+    let cfgDatas = {}
+    let data = reactive({
         addBtn: {
             comp: MenuButton,
             name: '新建',
-            // clickCb: addNewCtrl,
             clickCb: addNew,
         },
     })
 
     function init() {
-        ConfigMgr.loadCusCtrlList()
+        return ConfigMgr.loadCusCtrl()
         .then(clist => {
+            cfgDatas = clist
             reset()
-            clist.forEach(file => {
-                let cname = file.split('.')[0]
+            for (let key in clist) {
+                let item = clist[key]
+                let cname = item.type
                 data[cname] = {
                     comp: MenuItem,
                     name: cname,
                     clickCb: addCtrlItem,
                     delCb: param => delCtrl(param?.name)
                 }
-            })
+            }
         })
     }
 
@@ -45,95 +45,58 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
         }
     }
 
-    function addNewCtrl() {
-        // 生成自定义控件名, 及其对应的属性
-        let ctrlName = newCtrlName()
-        let ctrlCfg = createCtrlCfg()
-        ctrlCfg.type = ctrlName
-        data[ctrlName] = {
-            comp: MenuItem,
-            name: ctrlName,
-            attr: ctrlCfg,
-            isSel: false,
-            delCb: param => delCtrl(param?.name)
-        }
-    
-        // 保存配置
-        saveCtrlCfg()
-    
-        // 生成自定义控件模拟组件代码;
-        CodeBuilder.buildCtrlSimu(ctrlName, data[ctrlName].attr)
-
-        // 生成自定义控件组件代码
-        CodeBuilder.buildCtrlCus(ctrlName, data[ctrlName].attr)
-        
-        // 生成自定义控件的 creator 函数代码
-        CodeBuilder.buildCtrlMgr(data)
-    }
     function addNew() {
         // 生成名称, 生成默认数据
         let ctrlName = newCtrlName()
         let ctrlCfg = createCtrlCfg()
         ctrlCfg.type = ctrlName
 
-        // 生成模拟控件
+        cfgDatas[ctrlName] = ctrlCfg
+        data[ctrlName] = {
+            comp: MenuItem,
+            name: ctrlName,
+            clickCb: addCtrlItem,
+            delCb: param => delCtrl(param?.name)
+        }
 
-        // 生成控件
-
-        // 生成 ctorMgr
-
-        // 保存配置
-        return ConfigMgr.saveCusCtrl(ctrlCfg)
-        .then(_ => init())
+        saveCtrlInteral(ctrlCfg)
+        // 生成自定义控件的 creator 函数代码
+        CodeBuilder.buildCtrlMgr(cfgDatas)
     }
 
-    function saveCtrl(attr) {
-        let ctrlName = attr.type
-        data[ctrlName].attr = attr
+    function saveCtrl(ctrlName, main) {
+        let ctrlCfg = cfgDatas[ctrlName]
+        ctrlCfg.main = main
+        saveCtrlInteral(ctrlCfg)
+    }
 
-        // 保存配置
-        saveCtrlCfg()
+    function saveCtrlInteral(ctrlCfg) {
+        // 生成模拟控件
+        CodeBuilder.buildCtrlSimu(ctrlCfg)
 
-        // 生成自定义控件模拟组件代码;
-        CodeBuilder.buildCtrlSimu(ctrlName, data[ctrlName].attr)
-
-        // 生成自定义控件组件代码
-        CodeBuilder.buildCtrlCus(ctrlName, data[ctrlName].attr)
+        // 生成控件
+        CodeBuilder.buildCtrlCus(ctrlCfg)
         
-        // 生成自定义控件的 creator 函数代码
-        CodeBuilder.buildCtrlMgr(data)
+        // 保存配置
+        ConfigMgr.saveCusCtrl(cfgDatas)
     }
 
     function delCtrl(name) {
-        // data中删除name
+        // 删除配置数据
         delete data[name]
+        delete cfgDatas[name]
 
-        // 删除配置
-        // saveCtrlCfg()
+        // 重新保存配置
+        ConfigMgr.saveCusCtrl(cfgDatas)
 
-        // // 重新生成 creator 函数代码
-        // CodeBuilder.buildCtrlMgr(data)
+        // 重新生成 ctorMgr
+        CodeBuilder.buildCtrlMgr(cfgDatas)
 
-        // // 删除自定义控件模拟组件代码
-        // CodeBuilder.delCtrlSimu(name)
+        // 删除模块控件
+        CodeBuilder.delCtrlSimu(name)
 
-        // // 删除自定义控件组件代码
-        // CodeBuilder.delCtrlCus(name)
-    }
-
-    function saveCtrlCfg() {
-        let ctrls = {}
-        for (let key in data) {
-            if (key === 'addBtn') continue
-            let item = data[key]
-            ctrls[key] = {
-                name: item.name,
-                attr: item.attr,
-            }
-        }
-        FileMgr.saveFile(ctrlCfgPath, JSON.stringify(ctrls, (k, v) => {
-            return k === 'isSelect' ? false : v
-        }, '  '))
+        // 删除控件
+        CodeBuilder.delCtrlCus(name)
     }
 
     function addCtrlItem(item) {
@@ -159,6 +122,7 @@ export const useCtrlCustomStore = defineStore('ctrl-custom', _ => {
 function createCtrlCfg() {
     return {
         mainType: 'Panel',
-        main: ctrlItemCtor('Panel')
+        main: ctrlItemCtor('Panel'),
+        attr: {}
     }
 }
